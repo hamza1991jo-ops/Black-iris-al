@@ -50,7 +50,7 @@
                     <span class="text-[9px] text-purple-300 font-medium">المدير التنفيذي والشريك الاستراتيجي</span>
                 </div>
             </div>
-            <button onclick="alert('قسم الباقات العربية: باقة النمو (65 دينار شهرياً)')" class="bg-purple-600/30 hover:bg-purple-600/50 text-purple-200 text-[10px] px-2.5 py-1.5 rounded-xl border border-purple-500/40 font-bold transition-all">
+            <button onclick="openPricing()" class="bg-purple-600/30 hover:bg-purple-600/50 text-purple-200 text-[10px] px-2.5 py-1.5 rounded-xl border border-purple-500/40 font-bold transition-all">
                 💎 الباقات والتحصيل
             </button>
         </div>
@@ -72,7 +72,7 @@
         <!-- Input Area -->
         <div class="p-3 bg-black/60 border-t border-purple-500/20">
             <div class="flex items-center gap-2 bg-black/50 border border-purple-500/40 rounded-2xl p-1.5 focus-within:border-pink-500 transition-all">
-                <input type="text" id="userInput" class="flex-1 bg-transparent text-xs text-white placeholder-gray-500 focus:outline-none px-2" placeholder="اكتب فكرتك أو مشروعك هنا...">
+                <input type="text" id="userInput" class="flex-1 bg-transparent text-xs text-white placeholder-gray-500 focus:outline-none px-2" placeholder="اكتب ردك أو فكرة مشروعك هنا...">
                 <button onclick="handleSend()" class="glow-btn text-white px-4 py-2 rounded-xl text-xs font-bold transition-all">
                     إرسال 🚀
                 </button>
@@ -84,6 +84,8 @@
     <script>
         const chatContainer = document.getElementById('chatContainer');
         const userInput = document.getElementById('userInput');
+        
+        let conversationStep = 0; // تتبع تدفق الحوار بذكاء
 
         function appendMessage(text, sender = 'user') {
             const div = document.createElement('div');
@@ -92,7 +94,7 @@
                 div.innerHTML = `<div class="chat-bubble-user p-3 rounded-2xl rounded-tl-none text-xs text-white max-w-[82%] leading-relaxed shadow-md">${text}</div><div class="w-7 h-7 rounded-xl bg-pink-600 flex items-center justify-center text-xs shrink-0 shadow-md">👤</div>`;
             } else {
                 div.className = "flex items-start gap-2.5";
-                div.innerHTML = `<div class="w-7 h-7 rounded-xl bg-purple-600 flex items-center justify-center text-xs shrink-0 shadow-md">🏛️</div><div class="space-y-1.5 max-w-[85%]" ><span class="text-[9px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full font-bold inline-block">المدير التنفيذي الذكي</span><div class="chat-bubble-ai p-3 rounded-2xl rounded-tr-none text-xs text-gray-100 leading-relaxed">${text}</div></div>`;
+                div.innerHTML = `<div class="w-7 h-7 rounded-xl bg-purple-600 flex items-center justify-center text-xs shrink-0 shadow-md">🏛️</div><div class="space-y-1.5 max-w-[85%]"><span class="text-[9px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full font-bold inline-block">المدير التنفيذي الذكي</span><div class="chat-bubble-ai p-3 rounded-2xl rounded-tr-none text-xs text-gray-100 leading-relaxed">${text}</div></div>`;
             }
             chatContainer.appendChild(div);
             chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -105,12 +107,31 @@
             userInput.value = '';
 
             setTimeout(() => {
-                let reply = "لقد استقطبت فكرتك بنجاح! يعمل فريق التخطيط والـ Media Buying الآن على تجهيز الحملة الإعلانية الموجهة لمنصات تيك توك وسناب شات وفيسبوك وإنستغرام. هل نبدأ بصياغة النصوص التسويقية؟";
-                if(text.includes("سعر") || text.includes("باقة")) {
-                    reply = "باقاتنا مصممة خصيصاً للسوق العربي بأفضل العوائد. باقة النمو لدينا بـ 65 دينار شهرياً وتشمل إدارة كاملة للحملات الأربع الكبرى. هل ترغب بتفعيلها الآن؟";
+                let reply = "";
+                
+                // عقل تفاعلي متطور يقرأ تدفق الحوار ولا يعطي إجابة مكررة
+                if (conversationStep === 0) {
+                    reply = `رائع جداً! استلامي لـ "${text}" يضعنا على الطريق الصحيح. بصفتي مديرك التنفيذي، قمت بتوجيه فريق "Media Buying" و"الإبداع" لبدء هندسة الحملة على (سناب شات، تيك توك، فيسبوك، وإنستغرام). هل نبدأ بكتابة النصوص الإعلانية الجذابة (Hooks) لهذا النشاط؟`;
+                    conversationStep = 1;
+                } else if (conversationStep === 1) {
+                    reply = `ممتاز. بناءً على ردك، قمنا بتجهيز 3 أفكار إعلانية تركز على سرعة الخدمة وجذب الزبائن المستهدفين في محيطك الجغرافي. هل ترغب بأن نقوم باعتماد الميزانية اليومية وإطلاق الحملة الآن عبر المنصات الأربع؟`;
+                    conversationStep = 2;
+                } else if (conversationStep === 2) {
+                    reply = `أحسنت الاختيار! تم ربط إعدادات الحملة بنظام التحليل الذكي لمتابعة عائد الإنفاق (ROAS) على مدار الساعة. لضمان استمرار الحملة بكفاءة عالية، هل ترغب في مراجعة باقات الدعم والتشغيل الشهري لدينا؟`;
+                    conversationStep = 3;
+                } else {
+                    reply = `أنا معك خطوة بخطوة لضمان نجاح مشروعك وزيادة مبيعاتك. هل لديك أي تعديل آخر أو ترغب بإطلاق حملة جديدة لمنتج إضافي؟`;
                 }
+
                 appendMessage(reply, 'ai');
-            }, 800);
+            }, 900);
+        }
+
+        function openPricing() {
+            appendMessage("أرغب في الاطلاع على الباقات والتحصيل المالي", 'user');
+            setTimeout(() => {
+                appendMessage("💰 <strong>الباقات المتاحة للسوق العربي:</strong><br>1. <strong>باقة النمو (65 دينار شهرياً):</strong> إدارة كاملة للحملات على المنصات الأربع + تقارير أداء أسبوعية.<br>2. <strong>باقة المؤسسات (120 دينار شهرياً):</strong> حملات غير محدودة + خبير تسويق مخصص.<br><br>اختر الباقة المناسبة لنقوم بتوليد رابط الدفع والتحصيل الآلي فوراً!", 'ai');
+            }, 700);
         }
 
         userInput.addEventListener('keypress', (e) => {
