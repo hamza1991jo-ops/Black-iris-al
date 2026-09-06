@@ -5,18 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Black Iris AI - منصة الإعلانات الذكية</title>
     <style>
-        body { font-family: Tahoma, sans-serif; background-color: #f9f9f9; text-align: center; padding: 50px; }
-        h1 { color: #333; }
-        p { color: #666; font-size: 18px; }
-        .btn { background-color: #007bff; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-size: 20px; display: inline-block; margin-top: 20px; }
+        body { font-family: Tahoma, sans-serif; background-color: #f9f9f9; text-align: center; padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 400px; margin: 15px auto; }
+        h1 { color: #222; font-size: 20px; }
+        p { color: #555; font-size: 14px; }
+        input[type="email"], input[type="text"] { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; }
+        .btn-green { background-color: #28a745; color: white; padding: 12px; border: none; border-radius: 6px; font-size: 16px; width: 95%; cursor: pointer; font-weight: bold; }
+        .btn-blue { background-color: #007bff; color: white; padding: 12px; border: none; border-radius: 6px; font-size: 16px; width: 95%; cursor: pointer; font-weight: bold; }
+        .msg { margin-top: 10px; font-size: 14px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <h1>أطلق إعلاناتك الاحترافية على السوشيال ميديا بضغط زر واحدة!</h1>
-    <p>دع موقعنا يحلل منتجك، يكتب نصوصك التسويقية، ويستهدف جمهورك بدقة تلقائياً.</p>
-    
-    <a href="#" class="btn">ابدأ حملتك الأولى الآن مجاناً</a>
+    <!-- الجزء الأول: التسجيل وبدء الـ 15 يوماً -->
+    <div class="card">
+        <h1>ابدأ فترتك التجريبية (15 يوماً مجاناً)</h1>
+        <p>سجل بريدك الإلكتروني لفتح حسابك التجريبي الفوري.</p>
+        <input type="email" id="userEmail" placeholder="أدخل بريدك الإلكتروني...">
+        <button class="btn-green" onclick="registerUser()">تسجيل وفعل التجربة</button>
+        <p id="regMsg" class="msg" style="color: #28a745;"></p>
+    </div>
+
+    <!-- الجزء الثاني: إدخال وصف المنتج وتوليد الإعلان -->
+    <div class="card">
+        <h1>إطلاق الإعلان الذكي</h1>
+        <p>ما هو منتجك لكي نقوم بتحليله وكتابة إعلانه؟</p>
+        <input type="text" id="productDesc" placeholder="مثال: عطور فاخرة في الأردن">
+        <button class="btn-blue" onclick="generateAd()">توليد الإعلان وإطلاقه</button>
+        <p id="adMsg" class="msg" style="color: #007bff;"></p>
+    </div>
+
+    <script>
+        function registerUser() {
+            var email = document.getElementById('userEmail').value;
+            if(email.trim() === "" || !email.includes("@")) {
+                alert("الرجاء إدخال بريد إلكتروني صحيح!");
+                return;
+            }
+            document.getElementById('regMsg').innerText = "✅ تم تفعيل فترة الـ 15 يوماً المجانية بنجاح!";
+        }
+
+        function generateAd() {
+            var desc = document.getElementById('productDesc').value;
+            if(desc.trim() === "") {
+                alert("الرجاء كتابة وصف المنتج أولاً!");
+                return;
+            }
+            document.getElementById('adMsg').innerText = "✨ جاري تحليل المنتج واختيار الجمهور وإطلاق الحملة...";
+        }
+    </script>
 
 </body>
 </html>
