@@ -1,288 +1,206 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Black Iris AI - Global Ad Intelligence & Agency Engine</title>
-  <style>
-    :root {
-      --bg-dark: #0a0712;
-      --card-bg: #140f26;
-      --card-border: rgba(139, 92, 246, 0.25);
-      --purple-primary: #8b5cf6;
-      --purple-glow: rgba(139, 92, 246, 0.4);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --green-accent: #10b981;
-      --green-glow: rgba(16, 185, 129, 0.2);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      padding: 16px;
-      padding-bottom: 90px;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--card-bg);
-      padding: 14px 16px;
-      border-radius: 18px;
-      border: 1px solid var(--card-border);
-      margin-bottom: 16px;
-    }
-
-    .brand-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-badge {
-      width: 42px;
-      height: 42px;
-      background: linear-gradient(135deg, #a855f7, #6366f1);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
-    }
-
-    .brand-title {
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .brand-sub {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .vip-badge {
-      background: rgba(139, 92, 246, 0.15);
-      color: #c084fc;
-      border: 1px solid var(--purple-primary);
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .stats-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .stat-box {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      padding: 14px;
-      border-radius: 16px;
-    }
-
-    .stat-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .stat-num {
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .stat-num.purple { color: #d8b4fe; }
-    .stat-num.green { color: var(--green-accent); }
-
-    .section-header {
-      font-size: 14px;
-      font-weight: 600;
-      color: #e2e8f0;
-      margin-bottom: 12px;
-    }
-
-    .channels-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 24px;
-    }
-
-    .channel-card {
-      background: var(--card-bg);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 12px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 13px;
-      font-weight: 500;
-    }
-
-    .status-active {
-      width: 8px;
-      height: 8px;
-      background-color: var(--green-accent);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--green-accent);
-    }
-
-    .agency-box {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 18px;
-      margin-bottom: 24px;
-    }
-
-    .pkg-title {
-      font-size: 16px;
-      font-weight: bold;
-      color: #f1f5f9;
-      margin-bottom: 6px;
-    }
-
-    .pkg-price {
-      font-size: 22px;
-      font-weight: 800;
-      color: #a855f7;
-      margin-bottom: 12px;
-    }
-
-    .feature-list {
-      list-style: none;
-      font-size: 13px;
-      color: #cbd5e1;
-      margin-bottom: 16px;
-    }
-
-    .feature-list li {
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .upload-zone {
-      border: 2px dashed rgba(139, 92, 246, 0.4);
-      border-radius: 14px;
-      padding: 16px;
-      text-align: center;
-      background: rgba(139, 92, 246, 0.05);
-      margin-bottom: 14px;
-      cursor: pointer;
-    }
-
-    .upload-text {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .btn-action {
-      width: 100%;
-      background: linear-gradient(135deg, #8b5cf6, #6366f1);
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: bold;
-      box-shadow: 0 4px 16px var(--purple-glow);
-    }
-
-    footer {
-      text-align: center;
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 30px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Iris AI - Global Ad Intelligence</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #0b0614;
+            color: #ffffff;
+        }
+        .glass-card {
+            background: rgba(25, 18, 43, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+        .glow-btn {
+            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+        }
+        .glow-btn:hover {
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.7);
+        }
+    </style>
 </head>
-<body>
+<body class="min-p-4 md:p-8">
 
-  <header>
-    <div class="brand-info">
-      <div class="logo-badge">🌿</div>
-      <div>
-        <div class="brand-title">Black Iris AI</div>
-        <div class="brand-sub">Global Ad Intelligence</div>
-      </div>
-    </div>
-    <div class="vip-badge">VIP وكالة</div>
-  </header>
+    <div class="max-w-md mx-auto space-y-6">
 
-  <div class="stats-row">
-    <div class="stat-box">
-      <div class="stat-label">الميزانية النشطة</div>
-      <div class="stat-num purple">$4,250</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-label">عائد الإنفاق (ROAS)</div>
-      <div class="stat-num green">4.8x</div>
-    </div>
-  </div>
+        <!-- Top Header & VIP Agency Badge -->
+        <div class="glass-card p-4 rounded-2xl flex items-center justify-between">
+            <div>
+                <span class="text-xs text-purple-400 font-semibold tracking-wider">GLOBAL AD INTELLIGENCE</span>
+                <h1 class="text-xl font-extrabold text-white">Black Iris AI</h1>
+            </div>
+            <div class="flex items-center space-x-2 space-x-reverse">
+                <span class="bg-purple-900/60 text-purple-300 text-xs px-3 py-1 rounded-full border border-purple-500/30 font-bold">VIP وكالة</span>
+                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-green-500 to-emerald-400 flex items-center justify-center text-sm shadow-lg">🌿</div>
+            </div>
+        </div>
 
-  <div class="section-header">القنوات الإعلانية المربوطة</div>
-  <div class="channels-grid">
-    <div class="channel-card">
-      <span>👻 Snapchat</span>
-      <div class="status-active"></div>
-    </div>
-    <div class="channel-card">
-      <span>🎵 TikTok</span>
-      <div class="status-active"></div>
-    </div>
-    <div class="channel-card">
-      <span>♾️ Meta Ads</span>
-      <div class="status-active"></div>
-    </div>
-    <div class="channel-card">
-      <span>🔍 Google Ads</span>
-      <div class="status-active"></div>
-    </div>
-  </div>
+        <!-- Metrics Row -->
+        <div class="grid grid-cols-2 gap-3">
+            <div class="glass-card p-4 rounded-2xl text-center">
+                <span class="text-xs text-gray-400 block mb-1">عائد الإنفاق (ROAS)</span>
+                <span class="text-2xl font-black text-emerald-400">4.8x</span>
+            </div>
+            <div class="glass-card p-4 rounded-2xl text-center">
+                <span class="text-xs text-gray-400 block mb-1">الميزانية النشطة</span>
+                <span class="text-2xl font-black text-purple-300">$4,250</span>
+            </div>
+        </div>
 
-  <div class="agency-box">
-    <div class="pkg-title">🚀 باقة أتمتة إدارة الحملات والتسويق</div>
-    <div class="pkg-price">65 دينار / شهرياً</div>
-    <ul class="feature-list">
-      <li>✅ 12 منشوراً احترافياً شهرياً</li>
-      <li>✅ توليد تصاميم وفيديوهات موشن بالذكاء الاصطناعي</li>
-      <li>✅ كتابة محتوى إعلاني وسيناريوهات تسويقية</li>
-      <li>✅ نشر وتوزيع آلي وإدارة الحملات الإعلانية الممولة</li>
-    </ul>
+        <!-- Connected Channels -->
+        <div class="glass-card p-4 rounded-2xl space-y-3">
+            <h2 class="text-xs text-gray-400 font-semibold">القنوات الإعلانية المربوطة</h2>
+            <div class="grid grid-cols-2 gap-2">
+                <div class="bg-black/30 p-3 rounded-xl flex items-center justify-between border border-white/5">
+                    <span class="text-sm font-medium">TikTok</span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                </div>
+                <div class="bg-black/30 p-3 rounded-xl flex items-center justify-between border border-white/5">
+                    <span class="text-sm font-medium">Snapchat</span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                </div>
+                <div class="bg-black/30 p-3 rounded-xl flex items-center justify-between border border-white/5">
+                    <span class="text-sm font-medium">Google Ads</span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                </div>
+                <div class="bg-black/30 p-3 rounded-xl flex items-center justify-between border border-white/5">
+                    <span class="text-sm font-medium">Meta Ads</span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                </div>
+            </div>
+        </div>
 
-    <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
-      <div style="font-size: 24px; margin-bottom: 4px;">📤</div>
-      <div style="font-size: 13px; font-weight: bold; margin-bottom: 2px;">ارفع الصور، المقالات، أو موادك الإعلانية</div>
-      <div class="upload-text">اضغط هنا لرفع صور المنتجات، المشروبات، أو نصوص المقالات</div>
-      <input type="file" id="fileInput" multiple style="display: none;" onchange="alert('تم رفع الصور والمواد بنجاح للذكاء الاصطناعي!')" />
+        <!-- AI Ad Generator Section -->
+        <div class="glass-card p-5 rounded-2xl space-y-4">
+            <div class="flex items-center justify-between">
+                <h2 class="text-sm font-bold text-purple-300 flex items-center gap-1">✨ Iris AI Ad Generator</h2>
+                <span class="text-[10px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded">GPT-4 Turbo</span>
+            </div>
+
+            <div>
+                <textarea id="adPrompt" rows="3" class="w-full bg-black/40 border border-purple-500/30 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500 text-white placeholder-gray-500" placeholder="اكتب وصف نشاطك أو حملتك الإعلانية هنا..."></textarea>
+            </div>
+
+            <button onclick="generateAd()" id="generateBtn" class="w-full glow-btn text-white py-3 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2">
+                <span>⚡ توليد النصوص والحملة التسويقية</span>
+            </button>
+
+            <!-- Result Box with Fallback Handler -->
+            <div id="resultBox" class="bg-black/40 border border-white/10 rounded-xl p-4 text-xs space-y-2 hidden">
+                <span class="text-purple-400 font-bold block">النتائج والاستراتيجية المقترحة:</span>
+                <p id="resultText" class="text-gray-300 leading-relaxed"></p>
+            </div>
+        </div>
+
+        <!-- متعددة الباقات (Pricing Packages Section) -->
+        <div class="space-y-4">
+            <div class="text-center">
+                <h2 class="text-lg font-extrabold text-white">🚀 اختر باقة أتمتة الحملات</h2>
+                <p class="text-xs text-gray-400">ارتقِ بمبيعاتك مع حلول الذكاء الاصطناعي المتقدمة</p>
+            </div>
+
+            <!-- الباقة الأولى: الأساسية -->
+            <div class="glass-card p-5 rounded-2xl space-y-3 border border-white/10">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-white text-sm">الباقة الأساسية (Starter)</h3>
+                    <span class="text-purple-400 font-black text-lg">35 دينار<span class="text-xs text-gray-400">/شرياً</span></span>
+                </div>
+                <ul class="text-xs text-gray-300 space-y-2">
+                    <li class="flex items-center gap-2">✅ 5 منشورات ذكية شهرياً</li>
+                    <li class="flex items-center gap-2">✅ توليد نصوص تسويقية بالذكاء الاصطناعي</li>
+                    <li class="flex items-center gap-2">✅ ربط منصتين إعلانيتين</li>
+                </ul>
+                <button class="w-full bg-white/10 hover:bg-white/20 text-white py-2.5 rounded-xl text-xs font-bold transition-all">اختر الأساسية</button>
+            </div>
+
+            <!-- الباقة الثانية: النمو (الأكثر طلباً) -->
+            <div class="glass-card p-5 rounded-2xl space-y-3 border-2 border-purple-500 relative shadow-xl">
+                <div class="absolute -top-3 left-4 bg-purple-600 text-white text-[10px] font-bold px-3 py-0.5 rounded-full shadow">الأكثر طلباً ⭐</div>
+                <div class="flex justify-between items-center pt-1">
+                    <h3 class="font-bold text-white text-sm">باقة النمو والوكالات (Growth)</h3>
+                    <span class="text-purple-400 font-black text-lg">65 دينار<span class="text-xs text-gray-400">/شهرياً</span></span>
+                </div>
+                <ul class="text-xs text-gray-300 space-y-2">
+                    <li class="flex items-center gap-2">✅ 12 منشوراً وفيديو موشن احترافي شهرياً</li>
+                    <li class="flex items-center gap-2">✅ كتابة محتوى إعلاني وسيناريوهات تسويقية</li>
+                    <li class="flex items-center gap-2">✅ نشر وتوزيع آلي وإدارة الحملات الممولة</li>
+                    <li class="flex items-center gap-2">✅ ربط جميع المنصات الأربع (Meta, TikTok, Snap, Google)</li>
+                </ul>
+                <button class="w-full glow-btn text-white py-2.5 rounded-xl text-xs font-bold transition-all">اشترك الآن وابدأ الحملة</button>
+            </div>
+
+            <!-- الباقة الثالثة: الشركات الكبرى -->
+            <div class="glass-card p-5 rounded-2xl space-y-3 border border-white/10">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-white text-sm">باقة المؤسسات (Enterprise)</h3>
+                    <span class="text-purple-400 font-black text-lg">120 دينار<span class="text-xs text-gray-400">/شهرياً</span></span>
+                </div>
+                <ul class="text-xs text-gray-300 space-y-2">
+                    <li class="flex items-center gap-2">✅ حملات غير محدودة وأتمتة كاملة</li>
+                    <li class="flex items-center gap-2">✅ إشراف وخبير تسويق مخصص</li>
+                    <li class="flex items-center gap-2">✅ تقارير أداء متقدمة وتحليل منافسين</li>
+                </ul>
+                <button class="w-full bg-white/10 hover:bg-white/20 text-white py-2.5 rounded-xl text-xs font-bold transition-all">تواصل للمؤسسات</button>
+            </div>
+        </div>
+
+        <!-- Media Upload Zone -->
+        <div class="glass-card p-5 rounded-2xl space-y-3 text-center border-dashed border-2 border-purple-500/30">
+            <span class="text-2xl">📁</span>
+            <h4 class="text-xs font-bold text-gray-300">ارفع الصور، المقالات، أو موادك الإعلانية</h4>
+            <p class="text-[10px] text-gray-500">اضغط هنا لرفع صور المنتجات، المشروبات، أو نصوص المقالات</p>
+            <input type="file" id="fileUpload" class="hidden" multiple onchange="handleFileSelect(event)">
+            <button onclick="document.getElementById('fileUpload').click()" class="bg-purple-600/30 hover:bg-purple-600/50 text-purple-300 text-xs py-2 px-4 rounded-xl border border-purple-500/30 transition-all">
+                استعراض الملفات من الجهاز
+            </button>
+            <div id="fileList" class="text-xs text-emerald-400 mt-2"></div>
+        </div>
+
     </div>
 
-    <button class="btn-action" onclick="alert('جاري تحليل المواد وتوليد الحملات الإعلانية ومحتوى الشهر تلقائياً! 🚀')">
-      إطلاق الحملة وتوليد المحتوى بالذكاء الاصطناعي
-    </button>
-  </div>
+    <script>
+        function generateAd() {
+            const prompt = document.getElementById('adPrompt').value;
+            const btn = document.getElementById('generateBtn');
+            const resultBox = document.getElementById('resultBox');
+            const resultText = document.getElementById('resultText');
 
-  <footer>
-    © 2026 Black Iris AI. Managed globally via iPhone.
-  </footer>
+            if(!prompt.trim()) {
+                alert('يرجى كتابة وصف نشاطك أو حملتك أولاً.');
+                return;
+            }
 
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳ جاري التحليل وصياغة الحملة...</span>';
+
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<span>⚡ توليد النصوص والحملة التسويقية</span>';
+                resultBox.classList.remove('hidden');
+                
+                // محاكاة استجابة ذكية ناجحة
+                resultText.innerHTML = `تم توليد الحملة بنجاح بنسبة مطابقة 98% لنشاطك:<br>
+                • <strong>عنوان الإعلان:</strong> اكتشف القوة الحقيقية لمنتجك معنا!<br>
+                • <strong>الجمهور المستهدف:</strong> مهتمون بالتسوق الإلكتروني، الفئة العمرية (18-35).<br>
+                • <strong>المنصات المقترحة:</strong> Snapchat & TikTok لأعلى عائد ROAS متوقع.`;
+            }, 1500);
+        }
+
+        function handleFileSelect(event) {
+            const files = event.target.files;
+            const fileList = document.getElementById('fileList');
+            if(files.length > 0) {
+                fileList.innerHTML = `تم اختيار ${files.length} ملف بنجاح وسيتم معالجتها للذكاء الاصطناعي.`;
+            }
+        }
+    </script>
 </body>
 </html>
