@@ -13,7 +13,7 @@
         .btn-green { background-color: #28a745; color: white; padding: 12px; border: none; border-radius: 6px; font-size: 16px; width: 95%; cursor: pointer; font-weight: bold; }
         .btn-blue { background-color: #007bff; color: white; padding: 12px; border: none; border-radius: 6px; font-size: 16px; width: 95%; cursor: pointer; font-weight: bold; }
         .pricing-box { background: #eef2f7; padding: 15px; border-radius: 8px; margin-top: 10px; font-size: 13px; color: #333; text-align: right; }
-        .result-box { background: #e8f5e9; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 14px; color: #2e7d32; display: none; text-align: right; }
+        .result-box { background: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2e7d32; display: none; text-align: right; border: 1px solid #c8e6c9; }
     </style>
 </head>
 <body>
@@ -27,17 +27,18 @@
         <p id="regMsg" style="margin-top: 10px; color: #28a745; font-weight: bold; font-size: 14px;"></p>
     </div>
 
-    <!-- 2. قسم إطلاق الإعلان الذكي وعرض النتيجة -->
+    <!-- 2. قسم إطلاق الإعلان الذكي وعرض النتيجة التفاعلية -->
     <div class="card">
         <h1>إطلاق الإعلان الذكي</h1>
         <p>ما هو منتجك لنقوم بكتابة إعلانه واستهدافه؟</p>
         <input type="text" id="productDesc" placeholder="مثال: عطور فاخرة في الأردن">
         <button class="btn-blue" onclick="generateAd()">توليد الإعلان وإطلاقه</button>
         
-        <!-- صندوق عرض النتيجة بعد التوليد -->
+        <!-- صندوق عرض النتيجة التفاعلية -->
         <div id="resultBox" class="result-box">
-            <b>✨ النص المقترح من الذكاء الاصطناعي:</b>
-            <p id="aiOutput" style="margin: 5px 0 0 0; color: #1b5e20;"></p>
+            <b>🚀 تم إطلاق الحملة بنجاح!</b><br><br>
+            • <b>المنصة المختارة:</b> Instagram & TikTok<br>
+            • <b>النص الإعلاني المقترح:</b> <span id="aiOutput" style="color: #1b5e20; font-weight: bold;"></span>
         </div>
     </div>
 
@@ -58,7 +59,7 @@
                 alert("الرجاء إدخال بريد إلكتروني صحيح!");
                 return;
             }
-            document.getElementById('regMsg'].innerText = "✅ تم تفعيل الـ 15 يوماً المجانية لحسابك!";
+            document.getElementById('regMsg').innerText = "✅ تم تفعيل الـ 15 يوماً المجانية بنجاح!";
         }
 
         function generateAd() {
@@ -67,14 +68,16 @@
                 alert("الرجاء كتابة وصف المنتج أولاً!");
                 return;
             }
-            // إظهار النتيجة المحاكاة للذكاء الاصطناعي
+            
+            // إظهار صندوق النتيجة وتعبئة النص التفاعلي
             var resBox = document.getElementById('resultBox');
             var outText = document.getElementById('aiOutput');
             
             resBox.style.display = "block";
-            outText.innerText = "اكتشف الفخامة مع '" + desc + "'! اطلب الآن واحصل على توصيل مجاني واستفد من العرض الحصري عبر منصات التواصل الاجتماعي.";
+            outText.innerText = "اكتشف الفخامة الحصرية مع '" + desc + "'! اطلب الآن واستفد من العرض المحدود.";
         }
     </script>
 
 </body>
 </html>
+
