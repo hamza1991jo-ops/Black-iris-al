@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Black Iris AI - منصة إدارة الحملات والدعم المتكاملة</title>
+    <title>Black Iris AI - وكالة التسويق الذكية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
@@ -17,17 +17,13 @@
             overflow: hidden;
         }
         .glass-panel {
-            background: rgba(18, 12, 30, 0.92);
+            background: rgba(18, 12, 30, 0.95);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(139, 92, 246, 0.3);
         }
         .glow-btn {
             background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
             box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
-            transition: all 0.3s ease;
-        }
-        .glow-btn:hover {
-            box-shadow: 0 0 30px rgba(236, 72, 153, 0.7);
         }
         .chat-bubble-ai {
             background: rgba(139, 92, 246, 0.12);
@@ -36,25 +32,13 @@
         .chat-bubble-user {
             background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
         }
-        .department-badge {
-            background: rgba(236, 72, 153, 0.2);
-            border: 1px solid rgba(236, 72, 153, 0.4);
-            color: #f472b6;
-        }
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(139, 92, 246, 0.4);
-            border-radius: 4px;
-        }
     </style>
 </head>
 <body class="p-2 md:p-4">
 
     <div class="max-w-md mx-auto w-full h-full flex flex-col justify-between glass-panel rounded-3xl overflow-hidden shadow-2xl">
 
-        <!-- Header - لوحة التحكم بالشركة -->
+        <!-- Header -->
         <div class="p-3.5 border-b border-purple-500/20 flex items-center justify-between bg-black/50">
             <div class="flex items-center space-x-3 space-x-reverse">
                 <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-600 via-pink-500 to-emerald-400 flex items-center justify-center text-lg shadow-lg animate-pulse">🌿</div>
@@ -63,254 +47,74 @@
                         <h1 class="text-xs font-extrabold text-white">Black Iris AI</h1>
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                     </div>
-                    <span class="text-[9px] text-purple-300 font-medium" id="currentDept">القسم النشط: الإدارة والتخطيط الاستراتيجي</span>
+                    <span class="text-[9px] text-purple-300 font-medium">المدير التنفيذي والشريك الاستراتيجي</span>
                 </div>
             </div>
-            
-            <div class="flex items-center gap-1.5">
-                <button type="button" id="pricingModalBtn" class="bg-purple-600/30 hover:bg-purple-600/50 text-purple-200 text-[10px] px-2.5 py-1.5 rounded-xl border border-purple-500/40 font-bold transition-all cursor-pointer">
-                    💎 الباقات والأسعار
-                </button>
-            </div>
+            <button onclick="alert('قسم الباقات العربية: باقة النمو (65 دينار شهرياً)')" class="bg-purple-600/30 hover:bg-purple-600/50 text-purple-200 text-[10px] px-2.5 py-1.5 rounded-xl border border-purple-500/40 font-bold transition-all">
+                💎 الباقات والتحصيل
+            </button>
         </div>
 
         <!-- Chat Messages Area -->
         <div id="chatContainer" class="flex-1 overflow-y-auto p-4 space-y-4">
-            <!-- رسالة الترحيب من الإدارة العليا -->
             <div class="flex items-start gap-2.5">
                 <div class="w-7 h-7 rounded-xl bg-purple-600 flex items-center justify-center text-xs shrink-0 shadow-md">🏛️</div>
                 <div class="space-y-1.5 max-w-[85%]">
-                    <span class="text-[9px] department-badge px-2 py-0.5 rounded-full font-bold inline-block">قسم التخطيط الاستراتيجي</span>
+                    <span class="text-[9px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full font-bold inline-block">الإدارة العليا والاستراتيجية</span>
                     <div class="chat-bubble-ai p-3 rounded-2xl rounded-tr-none text-xs text-gray-100 space-y-2 leading-relaxed">
-                        <p>أهلاً بك في <strong>Black Iris AI</strong>. بصفتي المدير الاستراتيجي لوكالتك، أنا هنا لتحليل مشروعك وبناء خطتك الإعلانية المتكاملة (استهداف، محتوى، وإدارة حملات).</p>
-                        <p>صف لي نشاطك التجاري أو مشروعك (مثل: متجر إلكتروني، مؤسسة صيانة، عيادة) لنبدأ العمل كفريق واحد!</p>
+                        <p>أهلاً بك في <strong>Black Iris AI</strong>. بصفتي شريكك الاستراتيجي ومديرك التنفيذي، أنا هنا لأدير معك وكالة التسويق والإعلانات بالكامل (عبر تيك توك، سناب شات، فيسبوك، وإنستغرام).</p>
+                        <p>أخبرني عن مشروعك أو نشاطك التجاري لنبدأ فوراً في صياغة الحملة وإدارتها كفريق واحد!</p>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Quick Action Chips (أقسام الشركة السريعة) -->
-        <div class="px-3 py-2 bg-black/30 border-t border-purple-500/10 flex gap-1.5 overflow-x-auto whitespace-nowrap">
-            <button type="button" class="quick-chip bg-purple-500/10 hover:bg-purple-500/30 text-purple-200 text-[10px] px-2.5 py-1 rounded-xl border border-purple-500/25 transition-all cursor-pointer">📊 اقترح استراتيجية لمتجري</button>
-            <button type="button" class="quick-chip bg-purple-500/10 hover:bg-purple-500/30 text-purple-200 text-[10px] px-2.5 py-1 rounded-xl border border-purple-500/25 transition-all cursor-pointer">🛠️ قسم الدعم الفني وحل المشاكل</button>
-            <button type="button" class="quick-chip bg-purple-500/10 hover:bg-purple-500/30 text-purple-200 text-[10px] px-2.5 py-1 rounded-xl border border-purple-500/25 transition-all cursor-pointer">💰 قسم الحسابات والباقات</button>
         </div>
 
         <!-- Input Area -->
         <div class="p-3 bg-black/60 border-t border-purple-500/20">
             <div class="flex items-center gap-2 bg-black/50 border border-purple-500/40 rounded-2xl p-1.5 focus-within:border-pink-500 transition-all">
-                <input type="file" id="fileInput" class="hidden" multiple accept="image/*,video/*,.txt,.pdf">
-                <button type="button" id="attachBtn" class="p-2 text-purple-400 hover:text-pink-400 transition-all cursor-pointer" title="إرفاق صور أو ملفات لمدير الإبداع">
-                    📎
-                </button>
-                
-                <input type="text" id="userInput" class="flex-1 bg-transparent text-xs text-white placeholder-gray-500 focus:outline-none px-1" placeholder="اطرح فكرتك، أو اسأل الدعم الفني...">
-                
-                <button type="button" id="sendBtn" class="glow-btn text-white px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer">
-                    تنفيذ 🚀
+                <input type="text" id="userInput" class="flex-1 bg-transparent text-xs text-white placeholder-gray-500 focus:outline-none px-2" placeholder="اكتب فكرتك أو مشروعك هنا...">
+                <button onclick="handleSend()" class="glow-btn text-white px-4 py-2 rounded-xl text-xs font-bold transition-all">
+                    إرسال 🚀
                 </button>
             </div>
         </div>
 
-    </div>
-
-    <!-- Pricing Modal (قسم المالية والمحاسبة) -->
-    <div id="pricingModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="glass-panel max-w-sm w-full p-5 rounded-3xl space-y-4 max-h-[90vh] overflow-y-auto border border-pink-500/40 relative">
-            <div class="flex justify-between items-center border-b border-purple-500/20 pb-3">
-                <div>
-                    <h3 class="font-extrabold text-sm text-white">💰 قسم الباقات والاشتراكات</h3>
-                    <span class="text-[9px] text-pink-400">أسعار تنافسية لأعلى عائد استثماري (ROAS)</span>
-                </div>
-                <button type="button" id="closeModalBtn" class="text-gray-400 hover:text-white text-base cursor-pointer">✕</button>
-            </div>
-            
-            <div class="space-y-3">
-                <div class="bg-black/40 p-3.5 rounded-2xl border border-white/10 space-y-2">
-                    <div class="flex justify-between items-center">
-                        <span class="font-bold text-xs text-white">الباقة الأساسية</span>
-                        <span class="text-pink-400 font-black text-sm">35 د.أ <span class="text-[9px] text-gray-400">/شهر</span></span>
-                    </div>
-                    <p class="text-[10px] text-gray-300">5 منشورات شهرياً + توليد نصوص بالذكاء الاصطناعي + دعم فني عبر الشات.</p>
-                    <button type="button" class="select-plan-btn w-full bg-purple-600/30 hover:bg-purple-600 text-white py-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer" data-plan="الباقة الأساسية (35 دينار)">تفعيل الباقة الأساسية</button>
-                </div>
-
-                <div class="bg-black/40 p-3.5 rounded-2xl border-2 border-pink-500 space-y-2 relative shadow-lg">
-                    <span class="absolute -top-2.5 right-3 bg-pink-600 text-white text-[8px] font-bold px-2 py-0.5 rounded-full">باقة النمو المتكاملة ⭐</span>
-                    <div class="flex justify-between items-center pt-1">
-                        <span class="font-bold text-xs text-white">باقة النمو</span>
-                        <span class="text-pink-400 font-black text-sm">65 د.أ <span class="text-[9px] text-gray-400">/شهر</span></span>
-                    </div>
-                    <p class="text-[10px] text-gray-300">12 منشوراً وموشن + إدارة كاملة للحملات الممولة عبر سناب وتيك توك + دعم فني أولوية.</p>
-                    <button type="button" class="select-plan-btn w-full glow-btn text-white py-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer" data-plan="باقة النمو (65 دينار)">تفعيل باقة النمو</button>
-                </div>
-
-                <div class="bg-black/40 p-3.5 rounded-2xl border border-white/10 space-y-2">
-                    <div class="flex justify-between items-center">
-                        <span class="font-bold text-xs text-white">باقة المؤسسات</span>
-                        <span class="text-pink-400 font-black text-sm">120 د.أ <span class="text-[9px] text-gray-400">/شهر</span></span>
-                    </div>
-                    <p class="text-[10px] text-gray-300">حملات غير محدودة + خبير تسويق ودعم فني خاص وخاصية تحليل ROAS المتقدم.</p>
-                    <button type="button" class="select-plan-btn w-full bg-purple-600/30 hover:bg-purple-600 text-white py-2 rounded-xl text-[10px] font-bold transition-all cursor-pointer" data-plan="باقة المؤسسات (120 دينار)">تفعيل باقة المؤسسات</button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>
         const chatContainer = document.getElementById('chatContainer');
         const userInput = document.getElementById('userInput');
-        const sendBtn = document.getElementById('sendBtn');
-        const attachBtn = document.getElementById('attachBtn');
-        const fileInput = document.getElementById('fileInput');
-        const pricingModalBtn = document.getElementById('pricingModalBtn');
-        const pricingModal = document.getElementById('pricingModal');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const currentDept = document.getElementById('currentDept');
 
-        pricingModalBtn.addEventListener('click', () => pricingModal.classList.remove('hidden'));
-        closeModalBtn.addEventListener('click', () => pricingModal.classList.add('hidden'));
-
-        function appendMessage(text, sender = 'user', deptName = '', isFile = false) {
+        function appendMessage(text, sender = 'user') {
             const div = document.createElement('div');
             if (sender === 'user') {
                 div.className = "flex items-end justify-end gap-2";
-                div.innerHTML = `
-                    <div class="chat-bubble-user p-3 rounded-2xl rounded-tl-none text-xs text-white max-w-[82%] leading-relaxed shadow-md">
-                        ${isFile ? '📎 ' : ''}${text}
-                    </div>
-                    <div class="w-7 h-7 rounded-xl bg-pink-600 flex items-center justify-center text-xs shrink-0 shadow-md">👤</div>
-                `;
+                div.innerHTML = `<div class="chat-bubble-user p-3 rounded-2xl rounded-tl-none text-xs text-white max-w-[82%] leading-relaxed shadow-md">${text}</div><div class="w-7 h-7 rounded-xl bg-pink-600 flex items-center justify-center text-xs shrink-0 shadow-md">👤</div>`;
             } else {
                 div.className = "flex items-start gap-2.5";
-                div.innerHTML = `
-                    <div class="w-7 h-7 rounded-xl bg-purple-600 flex items-center justify-center text-xs shrink-0 shadow-md">🏛️</div>
-                    <div class="space-y-1.5 max-w-[85%]">
-                        <span class="text-[9px] department-badge px-2 py-0.5 rounded-full font-bold inline-block">${deptName}</span>
-                        <div class="chat-bubble-ai p-3 rounded-2xl rounded-tr-none text-xs text-gray-100 space-y-2 leading-relaxed">
-                            ${text}
-                        </div>
-                    </div>
-                `;
+                div.innerHTML = `<div class="w-7 h-7 rounded-xl bg-purple-600 flex items-center justify-center text-xs shrink-0 shadow-md">🏛️</div><div class="space-y-1.5 max-w-[85%]" ><span class="text-[9px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full font-bold inline-block">المدير التنفيذي الذكي</span><div class="chat-bubble-ai p-3 rounded-2xl rounded-tr-none text-xs text-gray-100 leading-relaxed">${text}</div></div>`;
             }
             chatContainer.appendChild(div);
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
-        // محرك الشركة المتكامل الموزع على الأقسام
-        let companyState = 0; // 0: الاستراتيجية, 1: الإنتاج الإبداعي, 2: Media Buying
-        let businessDetails = { activity: "", platform: "" };
-
-        function processCompanyWorkflow(text) {
-            const lower = text.toLowerCase();
-
-            // قسم الدعم الفني
-            if (lower.includes('مشكلة') || lower.includes('عطل') || lower.includes('دعم') || lower.includes('لا يعمل')) {
-                currentDept.innerText = "القسم النشط: الدعم الفني وحل المشاكل";
-                return {
-                    dept: "قسم الدعم الفني والتقني",
-                    reply: `أهلاً بك في قسم الدعم الفني! 🛠️ لقد تلقيت بلاغك. بصفتي مهندس الدعم, هل المشكلة متعلقة بربط حساب الإعلانات (مثل سناب شات أو تيك توك)، أم بانخفاض تفاعل الإعلان الحالي؟ اذكر التفاصيل لأعطيك الحل التقني الفوري.`
-                };
-            }
-
-            // قسم الحسابات والباقات
-            if (lower.includes('باقة') || lower.includes('سعر') || lower.includes('اشتراك')) {
-                currentDept.innerText = "القسم النشط: الإدارة المالية والاشتراكات";
-                return {
-                    dept: "قسم الحسابات والمشتريات",
-                    reply: `بناءً على تطلعاتك الاستثمارية، أنصحك بالبدء بـ <strong>باقة النمو (65 دينار شهرياً)</strong>؛ لضمان إدارة كاملة للحملات ورفع عائد الإنفاق (ROAS). يمكنك النقر على زر (الباقات والأسعار) بالأعلى لتفعيلها فوراً.`
-                };
-            }
-
-            // دورة العمل المتكاملة (Workflow) للعميل الجديد
-            if (companyState === 0) {
-                businessDetails.activity = text;
-                companyState = 1;
-                currentDept.innerText = "القسم النشط: الإبداع وكتابة المحتوى";
-                return {
-                    dept: "قسم التخطيط الاستراتيجي والمحتوى",
-                    reply: `تم استلام نشاطك (<strong>${text}</strong>) بنجاح من قِبَل قسم التخطيط.<br><br>الآن، انتقل الطلب إلى <strong>قسم الإبداع وكتابة المحتوى</strong>. لكي نحدد المنصة المناسبة بدقة (سناب شات، تيك توك، أو إنستغرام)، هل تستهدف جمهوراً عاماً أم فئة محددة؟`
-                };
-            } 
-            else if (companyState === 1) {
-                businessDetails.platform = text;
-                companyState = 2;
-                currentDept.innerText = "القسم النشط: Media Buying والحملات الممولة";
-                return {
-                    dept: "قسم إدارة الحملات الممولة",
-                    reply: `ممتاز! استناداً لاختيارك، قام فريق <strong>Media Buying</strong> بإعداد الهيكل الإعلاني:<br>
-                    1. <strong>الاستهداف:</strong> بناءً على اهتمامات وسلوكيات الجمهور في منصة ${text}.<br>
-                    2. <strong>الخطاف (Hook):</strong> تم كتابة 3 نصوص تسويقية تركز على حل مشكلة العملاء وزيادة المبيعات.<br><br>
-                    هل ترغب بأن ننتقل لمرحلة اعتماد الميزانية اليومية وإطلاق الحملة الآن؟ (اكتب: نعم لنبدأ)`
-                };
-            } 
-            else if (companyState === 2) {
-                companyState = 3;
-                currentDept.innerText = "القسم النشط: المتابعة وتحسين الأداء (ROAS)";
-                return {
-                    dept: "قسم تحسين الأداء وعائد الإنفاق",
-                    reply: `رائع جداً! تم حفظ إعدادات الحملة وربطها بنظام التحليل الذكي لدينا. سنقوم بمتابعة أداء الإعلانات على مدار الساعة لخفض تكلفة النقرة ورفع العائد (ROAS).<br><br>هل ترغب برفع صور أو تصاميم منتجاتك الآن لتحديث محتوى الحملة؟`
-                };
-            } 
-            else {
-                currentDept.innerText = "القسم النشط: الإدارة العليا والعملاء";
-                return {
-                    dept: "قسم نجاح العملاء والإدارة",
-                    reply: `بصفتي مديرك التنفيذي ومسؤولك المباشر في الشركة، أنا جاهز لأي تعديل إضافي أو إطلاق حملة جديدة. كيف ترغب أن نخدمك اليوم؟`
-                };
-            }
-        }
-
         function handleSend() {
             const text = userInput.value.trim();
             if (!text) return;
-
             appendMessage(text, 'user');
             userInput.value = '';
 
             setTimeout(() => {
-                const responseData = processCompanyWorkflow(text);
-                appendMessage(responseData.reply, 'ai', responseData.dept);
-            }, 750);
+                let reply = "لقد استقطبت فكرتك بنجاح! يعمل فريق التخطيط والـ Media Buying الآن على تجهيز الحملة الإعلانية الموجهة لمنصات تيك توك وسناب شات وفيسبوك وإنستغرام. هل نبدأ بصياغة النصوص التسويقية؟";
+                if(text.includes("سعر") || text.includes("باقة")) {
+                    reply = "باقاتنا مصممة خصيصاً للسوق العربي بأفضل العوائد. باقة النمو لدينا بـ 65 دينار شهرياً وتشمل إدارة كاملة للحملات الأربع الكبرى. هل ترغب بتفعيلها الآن؟";
+                }
+                appendMessage(reply, 'ai');
+            }, 800);
         }
 
-        sendBtn.addEventListener('click', handleSend);
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') handleSend();
-        });
-
-        // الأزرار السريعة لتوجيه الأقسام
-        document.querySelectorAll('.quick-chip').forEach(btn => {
-            btn.addEventListener('click', () => {
-                userInput.value = btn.innerText.replace(/^[^\w\u0600-\u06FF]+/, '').trim();
-                handleSend();
-            });
-        });
-
-        // تفعيل الباقات من قسم المحاسبة
-        document.querySelectorAll('.select-plan-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const planName = btn.getAttribute('data-plan');
-                pricingModal.classList.add('hidden');
-                currentDept.innerText = "القسم النشط: إدارة الحسابات والاشتراكات";
-                appendMessage(`أرغب في تفعيل اشتراك: ${planName}`, 'user');
-                setTimeout(() => {
-                    appendMessage(`تم تأكيد الدفع وتسجيل الاشتراك في <strong>${planName}</strong> بنجاح عبر النظام المالي! 🎉 تم رفع أولوية حسابك لدى قسم الدعم الفني وMedia Buying. اكتب لنا تفاصيل مشروعك لنبدأ العمل فوراً.`, 'ai', 'قسم الحسابات والاشتراكات');
-                }, 800);
-            });
-        });
-
-        // إرفاق الملفات لقسم الإبداع والميديا
-        attachBtn.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                const fileName = e.target.files[0].name;
-                currentDept.innerText = "القسم النشط: الإنتاج الإبداعي والميديا";
-                appendMessage(`تم إرفاق الملف: ${fileName}`, 'user', '', true);
-                setTimeout(() => {
-                    appendMessage(`📁 قام <strong>قسم الإبداع والتصميم البصري</strong> بفحص الملف المرفق (<strong>${fileName}</strong>). تم استخراج الألوان وتجهيز الإطار البصري المناسب لإعلانات تيك توك وسناب شات. هل نعتمد هذا التصميم في الحملة القادمة؟`, 'ai', 'قسم الإبداع والميديا');
-                }, 900);
-            }
         });
     </script>
 </body>
