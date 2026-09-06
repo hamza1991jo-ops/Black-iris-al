@@ -3,81 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Black Iris AI - منصة الإعلانات الذكية</title>
+    <title>Black Iris AI - منصة الأتمتة الإعلانية الذكية</title>
     <style>
-        body { font-family: Tahoma, sans-serif; background-color: #f9f9f9; text-align: center; padding: 20px; }
-        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 400px; margin: 15px auto; }
-        h1 { color: #222; font-size: 19px; }
-        p { color: #555; font-size: 14px; }
-        input[type="email"], input[type="text"] { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; }
-        .btn-green { background-color: #28a745; color: white; padding: 12px; border: none; border-radius: 6px; font-size: 16px; width: 95%; cursor: pointer; font-weight: bold; }
-        .btn-blue { background-color: #007bff; color: white; padding: 12px; border: none; border-radius: 6px; font-size: 16px; width: 95%; cursor: pointer; font-weight: bold; }
-        .pricing-box { background: #eef2f7; padding: 15px; border-radius: 8px; margin-top: 10px; font-size: 13px; color: #333; text-align: right; }
-        .result-box { background: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2e7d32; display: none; text-align: right; border: 1px solid #c8e6c9; }
+        body { font-family: Tahoma, sans-serif; background-color: #f4f6f9; text-align: center; padding: 15px; margin: 0; }
+        .container { max-width: 420px; margin: 0 auto; }
+        .card { background: white; padding: 20px; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 15px; text-align: right; }
+        h1 { color: #1a1a1a; font-size: 18px; text-align: center; margin-bottom: 8px; }
+        p { color: #666; font-size: 13px; text-align: center; margin-bottom: 15px; }
+        input[type="email"], input[type="text"], input[type="number"] { width: 100%; padding: 12px; margin: 6px 0 12px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; box-sizing: border-box; }
+        .btn-green { background-color: #28a745; color: white; padding: 12px; border: none; border-radius: 8px; font-size: 15px; width: 100%; cursor: pointer; font-weight: bold; }
+        .btn-blue { background-color: #007bff; color: white; padding: 12px; border: none; border-radius: 8px; font-size: 15px; width: 100%; cursor: pointer; font-weight: bold; }
+        .pricing-box { background: #f8f9fa; padding: 12px; border-radius: 8px; font-size: 13px; color: #333; border: 1px solid #e9ecef; line-height: 1.6; }
+        .result-box { background: #e8f5e9; padding: 14px; border-radius: 8px; margin-top: 12px; font-size: 13px; color: #2e7d32; display: none; border: 1px solid #c8e6c9; line-height: 1.5; }
+        .badge { display: inline-block; background: #e3f2fd; color: #0d47a1; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-bottom: 8px; }
     </style>
 </head>
 <body>
 
-    <!-- 1. قسم التسجيل وفترة التجربة -->
+<div class="container">
+
+    <!-- 1. قسم الدخول والتسجيل (فترة التجربة 15 يوماً) -->
     <div class="card">
-        <h1>ابدأ فترتك التجريبية (15 يوماً مجاناً)</h1>
-        <p>سجل بريدك لفتح حسابك التجريبي الفوري.</p>
-        <input type="email" id="userEmail" placeholder="أدخل بريدك الإلكتروني...">
-        <button class="btn-green" onclick="registerUser()">تسجيل وفعل التجربة</button>
-        <p id="regMsg" style="margin-top: 10px; color: #28a745; font-weight: bold; font-size: 14px;"></p>
+        <div style="text-align: center;"><span class="badge">عرض لفترة محدودة</span></div>
+        <h1>ابدأ فترتك التجريبية المجانية</h1>
+        <p>15 يوماً صلاحية كاملة لإدارة وإطلاق الحملات دون دفع مسبق.</p>
+        <label style="font-size: 12px; color: #444;">البريد الإلكتروني:</label>
+        <input type="email5" id="userEmail" placeholder="name@example.com">
+        <button class="btn-green" onclick="registerTrial()">تفعيل التجربة المجانية</button>
+        <p id="regMsg" style="margin-top: 10px; color: #28a745; font-weight: bold; font-size: 13px; text-align: center;"></p>
     </div>
 
-    <!-- 2. قسم إطلاق الإعلان الذكي وعرض النتيجة التفاعلية -->
+    <!-- 2. قسم الذكاء الاصطناعي والإدخال البسيط (Smart Onboarding) -->
     <div class="card">
-        <h1>إطلاق الإعلان الذكي</h1>
-        <p>ما هو منتجك لنقوم بكتابة إعلانه واستهدافه؟</p>
-        <input type="text" id="productDesc" placeholder="مثال: عطور فاخرة في الأردن">
-        <button class="btn-blue" onclick="generateAd()">توليد الإعلان وإطلاقه</button>
+        <h1>إطلاق الحملة بالذكاء الاصطناعي</h1>
+        <p>أدخل وصف منتجك، وسيتولى الذكاء الاصطناعي صياغة الإعلان واختيار المنصة.</p>
         
-        <!-- صندوق عرض النتيجة التفاعلية -->
+        <label style="font-size: 12px; color: #444;">ما هو منتجك ووصفه؟</label>
+        <input type="text" id="productDesc" placeholder="مثال: عطور فاخرة في الأردن">
+        
+        <label style="font-size: 12px; color: #444;">الميزانية التقديرية ($):</label>
+        <input type="number" id="adBudget" placeholder="50">
+
+        <button class="btn-blue" onclick="launchCampaign()">توليد الإعلان وأطلق الحملة الآن</button>
+        
+        <!-- صندوق عرض النتيجة الذكية -->
         <div id="resultBox" class="result-box">
-            <b>🚀 تم إطلاق الحملة بنجاح!</b><br><br>
-            • <b>المنصة المختارة:</b> Instagram & TikTok<br>
-            • <b>النص الإعلاني المقترح:</b> <span id="aiOutput" style="color: #1b5e20; font-weight: bold;"></span>
+            <b>🚀 تم إطلاق الحملة بنجاح عبر المنصة!</b><br><br>
+            • <b>المنصة المختارة:</b> <span id="resPlatform"></span><br>
+            • <b>النص التسويقي:</b> <span id="resCopy" style="font-weight: bold; color: #1b5e20;"></span><br>
+            • <b>الميزانية المعتمدة:</b> <span id="resBudget"></span>$
         </div>
     </div>
 
-    <!-- 3. قسم الباقات الشهرية -->
+    <!-- 3. قسم نموذج الاشتراكات والدفع (Pricing Model) -->
     <div class="card">
         <h1>الباقات الشهرية بعد التجربة</h1>
         <div class="pricing-box">
-            • <b>الأساسية (Starter):</b> حملات محدودة ومنصة واحدة.<br>
-            • <b>الاحترافية (Pro):</b> حملات غير محدودة وكل المنصات (موصى بها).<br>
-            • <b>الشركات (Enterprise):</b> للوكالات والمميزات المتقدمة.
+            • <b>الأساسية (Starter):</b> للحملات المحدودة ومنصة واحدة.<br>
+            • <b>الاحترافية (Pro):</b> حملات غير محدودة وكل المنصات <b>(موصى بها)</b>.<br>
+            • <b>الشركات (Enterprise):</b> للميزات المتقدمة والدعم الشامل.<br>
+            <hr style="border:0; border-top:1px solid #ddd; margin:8px 0;">
+            <span style="font-size: 11px; color: #666;">* مدعوم ببوابات دفع آمنة (Stripe / PayTabs).</span>
         </div>
     </div>
 
-    <script>
-        function registerUser() {
-            var email = document.getElementById('userEmail').value;
-            if(email.trim() === "" || !email.includes("@")) {
-                alert("الرجاء إدخال بريد إلكتروني صحيح!");
-                return;
-            }
-            document.getElementById('regMsg').innerText = "✅ تم تفعيل الـ 15 يوماً المجانية بنجاح!";
+</div>
+
+<script>
+    function registerTrial() {
+        var email = document.getElementById('userEmail').value;
+        if(email.trim() === "" || !email.includes("@")) {
+            alert("الرجاء إدخال بريد إلكتروني صحيح!");
+            return;
+        }
+        document.getElementById('regMsg').innerText = "✅ تم تفعيل حسابك التجريبي (15 يوماً) بنجاح!";
+    }
+
+    function launchCampaign() {
+        var desc = document.getElementById('productDesc').value;
+        var budget = document.getElementById('adBudget').value;
+
+        if(desc.trim() === "") {
+            alert("الرجاء إدخال وصف المنتج أولاً!");
+            return;
+        }
+        if(budget.trim() === "") {
+            alert("الرجاء تحديد الميزانية!");
+            return;
         }
 
-        function generateAd() {
-            var desc = document.getElementById('productDesc').value;
-            if(desc.trim() === "") {
-                alert("الرجاء كتابة وصف المنتج أولاً!");
-                return;
-            }
-            
-            // إظهار صندوق النتيجة وتعبئة النص التفاعلي
-            var resBox = document.getElementById('resultBox');
-            var outText = document.getElementById('aiOutput');
-            
-            resBox.style.display = "block";
-            outText.innerText = "اكتشف الفخامة الحصرية مع '" + desc + "'! اطلب الآن واستفد من العرض المحدود.";
+        // محاكاة اختيار الذكاء الاصطناعي للمنصة والنص التسويقي بناءً على الوصف
+        var platform = "Instagram & TikTok";
+        var copyText = "اكتشف الجودة والتميز مع '" + desc + "'! اطلب الآن واستفد من العرض الحصري لفترة محدودة.";
+        
+        if(desc.includes("عطور") || desc.includes("مجوهرات")) {
+            platform = "Instagram & Snapchat";
+            copyText = "✨ تألق بإطلالة استثنائية مع " + desc + ". اطلب قطعتك الآن!";
+        } else if(desc.includes("دورة") || desc.includes("خدمة")) {
+            platform = "Google Search";
+            copyText = "💡 طوّر أعمالك ومهاراتك اليوم مع " + desc + ". سجل الآن واحصل على استشارة فورية.";
         }
-    </script>
+
+        // عرض النتائج في واجهة المستخدم
+        document.getElementById('resPlatform').innerText = platform;
+        document.getElementById('resCopy').innerText = copyText;
+        document.getElementById('resBudget').innerText = budget;
+        
+        document.getElementById('resultBox').style.display = "block";
+    }
+</script>
 
 </body>
 </html>
-
