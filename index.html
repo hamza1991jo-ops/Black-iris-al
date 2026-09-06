@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" id="htmlRoot">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,37 +27,47 @@
         }
     </style>
 </head>
-<body class="min-p-4 md:p-8">
+<body class="p-4 md:p-8">
 
     <div class="max-w-md mx-auto space-y-6">
 
-        <!-- Top Header & VIP Agency Badge -->
+        <!-- Top Header, VIP Agency Badge & Language Selector -->
         <div class="glass-card p-4 rounded-2xl flex items-center justify-between">
-            <div>
-                <span class="text-xs text-purple-400 font-semibold tracking-wider">GLOBAL AD INTELLIGENCE</span>
-                <h1 class="text-xl font-extrabold text-white">Black Iris AI</h1>
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-green-500 to-emerald-400 flex items-center justify-center text-sm shadow-lg">🌿</div>
+                <div>
+                    <span class="text-[10px] text-purple-400 font-semibold tracking-wider" id="t-subtitle">GLOBAL AD INTELLIGENCE</span>
+                    <h1 class="text-lg font-extrabold text-white">Black Iris AI</h1>
+                </div>
             </div>
+            
             <div class="flex items-center space-x-2 space-x-reverse">
-                <span class="bg-purple-900/60 text-purple-300 text-xs px-3 py-1 rounded-full border border-purple-500/30 font-bold">VIP وكالة</span>
-                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-green-500 to-emerald-400 flex items-center justify-center text-sm shadow-lg">🌿</div>
+                <!-- Language Selector -->
+                <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-black/50 border border-purple-500/30 text-purple-200 text-xs rounded-xl px-2 py-1.5 focus:outline-none focus:border-purple-500">
+                    <option value="ar">العربية</option>
+                    <option value="en">English</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                    <option value="zh">中文</option>
+                </select>
             </div>
         </div>
 
         <!-- Metrics Row -->
         <div class="grid grid-cols-2 gap-3">
             <div class="glass-card p-4 rounded-2xl text-center">
-                <span class="text-xs text-gray-400 block mb-1">عائد الإنفاق (ROAS)</span>
+                <span class="text-xs text-gray-400 block mb-1" id="t-roas-label">عائد الإنفاق (ROAS)</span>
                 <span class="text-2xl font-black text-emerald-400">4.8x</span>
             </div>
             <div class="glass-card p-4 rounded-2xl text-center">
-                <span class="text-xs text-gray-400 block mb-1">الميزانية النشطة</span>
+                <span class="text-xs text-gray-400 block mb-1" id="t-budget-label">الميزانية النشطة</span>
                 <span class="text-2xl font-black text-purple-300">$4,250</span>
             </div>
         </div>
 
         <!-- Connected Channels -->
         <div class="glass-card p-4 rounded-2xl space-y-3">
-            <h2 class="text-xs text-gray-400 font-semibold">القنوات الإعلانية المربوطة</h2>
+            <h2 class="text-xs text-gray-400 font-semibold" id="t-channels-title">القنوات الإعلانية المربوطة</h2>
             <div class="grid grid-cols-2 gap-2">
                 <div class="bg-black/30 p-3 rounded-xl flex items-center justify-between border border-white/5">
                     <span class="text-sm font-medium">TikTok</span>
@@ -90,75 +100,75 @@
             </div>
 
             <button onclick="generateAd()" id="generateBtn" class="w-full glow-btn text-white py-3 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2">
-                <span>⚡ توليد النصوص والحملة التسويقية</span>
+                <span id="t-gen-btn">⚡ توليد النصوص والحملة التسويقية</span>
             </button>
 
-            <!-- Result Box with Fallback Handler -->
+            <!-- Result Box -->
             <div id="resultBox" class="bg-black/40 border border-white/10 rounded-xl p-4 text-xs space-y-2 hidden">
-                <span class="text-purple-400 font-bold block">النتائج والاستراتيجية المقترحة:</span>
+                <span class="text-purple-400 font-bold block" id="t-res-title">النتائج والاستراتيجية المقترحة:</span>
                 <p id="resultText" class="text-gray-300 leading-relaxed"></p>
             </div>
         </div>
 
-        <!-- متعددة الباقات (Pricing Packages Section) -->
+        <!-- Pricing Packages Section -->
         <div class="space-y-4">
             <div class="text-center">
-                <h2 class="text-lg font-extrabold text-white">🚀 اختر باقة أتمتة الحملات</h2>
-                <p class="text-xs text-gray-400">ارتقِ بمبيعاتك مع حلول الذكاء الاصطناعي المتقدمة</p>
+                <h2 class="text-lg font-extrabold text-white" id="t-pricing-title">🚀 اختر باقة أتمتة الحملات</h2>
+                <p class="text-xs text-gray-400" id="t-pricing-subtitle">ارتقِ بمبيعاتك مع حلول الذكاء الاصطناعي المتقدمة</p>
             </div>
 
-            <!-- الباقة الأولى: الأساسية -->
+            <!-- Starter Plan -->
             <div class="glass-card p-5 rounded-2xl space-y-3 border border-white/10">
                 <div class="flex justify-between items-center">
-                    <h3 class="font-bold text-white text-sm">الباقة الأساسية (Starter)</h3>
-                    <span class="text-purple-400 font-black text-lg">35 دينار<span class="text-xs text-gray-400">/شرياً</span></span>
+                    <h3 class="font-bold text-white text-sm" id="t-p1-title">الباقة الأساسية (Starter)</h3>
+                    <span class="text-purple-400 font-black text-lg">35 <span class="text-xs text-gray-400 t-currency">دينار/شهر</span></span>
                 </div>
                 <ul class="text-xs text-gray-300 space-y-2">
-                    <li class="flex items-center gap-2">✅ 5 منشورات ذكية شهرياً</li>
-                    <li class="flex items-center gap-2">✅ توليد نصوص تسويقية بالذكاء الاصطناعي</li>
-                    <li class="flex items-center gap-2">✅ ربط منصتين إعلانيتين</li>
+                    <li class="flex items-center gap-2" id="t-p1-f1">✅ 5 منشورات ذكية شهرياً</li>
+                    <li class="flex items-center gap-2" id="t-p1-f2">✅ توليد نصوص تسويقية بالذكاء الاصطناعي</li>
+                    <li class="flex items-center gap-2" id="t-p1-f3">✅ ربط منصتين إعلانيتين</li>
                 </ul>
-                <button class="w-full bg-white/10 hover:bg-white/20 text-white py-2.5 rounded-xl text-xs font-bold transition-all">اختر الأساسية</button>
+                <button class="w-full bg-white/10 hover:bg-white/20 text-white py-2.5 rounded-xl text-xs font-bold transition-all t-p-btn">اختر الأساسية</button>
             </div>
 
-            <!-- الباقة الثانية: النمو (الأكثر طلباً) -->
+            <!-- Growth Plan (Most Popular) -->
             <div class="glass-card p-5 rounded-2xl space-y-3 border-2 border-purple-500 relative shadow-xl">
-                <div class="absolute -top-3 left-4 bg-purple-600 text-white text-[10px] font-bold px-3 py-0.5 rounded-full shadow">الأكثر طلباً ⭐</div>
+                <div class="absolute -top-3 left-4 bg-purple-600 text-white text-[10px] font-bold px-3 py-0.5 rounded-full shadow" id="t-badge-popular">الأكثر طلباً ⭐</div>
                 <div class="flex justify-between items-center pt-1">
-                    <h3 class="font-bold text-white text-sm">باقة النمو والوكالات (Growth)</h3>
-                    <span class="text-purple-400 font-black text-lg">65 دينار<span class="text-xs text-gray-400">/شهرياً</span></span>
+                    <h3 class="font-bold text-white text-sm" id="t-p2-title">باقة النمو والوكالات (Growth)</h3>
+                    <span class="text-purple-400 font-black text-lg">65 <span class="text-xs text-gray-400 t-currency">دينار/شهر</span></span>
                 </div>
                 <ul class="text-xs text-gray-300 space-y-2">
-                    <li class="flex items-center gap-2">✅ 12 منشوراً وفيديو موشن احترافي شهرياً</li>
-                    <li class="flex items-center gap-2">✅ كتابة محتوى إعلاني وسيناريوهات تسويقية</li>
-                    <li class="flex items-center gap-2">✅ نشر وتوزيع آلي وإدارة الحملات الممولة</li>
-                    <li class="flex items-center gap-2">✅ ربط جميع المنصات الأربع (Meta, TikTok, Snap, Google)</li>
+                    <li class="flex items-center gap-2" id="t-p2-f1">✅ 12 منشوراً وفيديو موشن احترافي شهرياً</li>
+                    <li class="flex items-center gap-2" id="t-p2-f2">✅ كتابة محتوى إعلاني وسيناريوهات تسويقية</li>
+                    <li class="flex items-center gap-2" id="t-p2-f3">✅ نشر وتوزيع آلي وإدارة الحملات الممولة</li>
+                    <li class="flex items-center gap-2" id="t-p2-f4">✅ ربط جميع المنصات الأربع</li>
                 </ul>
-                <button class="w-full glow-btn text-white py-2.5 rounded-xl text-xs font-bold transition-all">اشترك الآن وابدأ الحملة</button>
+                <button class="w-full glow-btn text-white py-2.5 rounded-xl text-xs font-bold transition-all" id="t-p2-btn">اشترك الآن وابدأ الحملة</button>
             </div>
 
-            <!-- الباقة الثالثة: الشركات الكبرى -->
+            <!-- Enterprise Plan -->
             <div class="glass-card p-5 rounded-2xl space-y-3 border border-white/10">
                 <div class="flex justify-between items-center">
-                    <h3 class="font-bold text-white text-sm">باقة المؤسسات (Enterprise)</h3>
-                    <span class="text-purple-400 font-black text-lg">120 دينار<span class="text-xs text-gray-400">/شهرياً</span></span>
+                    <h3 class="font-bold text-white text-sm" id="t-p3-title">باقة المؤسسات (Enterprise)</h3>
+                    <span class="text-purple-400 font-black text-lg">120 <span class="text-xs text-gray-400 t-currency">دينار/شهر</span></span>
                 </div>
                 <ul class="text-xs text-gray-300 space-y-2">
-                    <li class="flex items-center gap-2">✅ حملات غير محدودة وأتمتة كاملة</li>
-                    <li class="flex items-center gap-2">✅ إشراف وخبير تسويق مخصص</li>
-                    <li class="flex items-center gap-2">✅ تقارير أداء متقدمة وتحليل منافسين</li>
+                    <li class="flex items-center gap-2" id="t-p3-f1">✅ حملات غير محدودة وأتمتة كاملة</li>
+                    <li class="flex items-center gap-2" id="t-p3-f2">✅ إشراف وخبير تسويق مخصص</li>
+                    <li class="flex items-center gap-2" id="t-p3-f3">✅ تقارير أداء متقدمة وتحليل منافسين</li>
                 </ul>
-                <button class="w-full bg-white/10 hover:bg-white/20 text-white py-2.5 rounded-xl text-xs font-bold transition-all">تواصل للمؤسسات</button>
+                <button class="w-full bg-white/10 hover:bg-white/20 text-white py-2.5 rounded-xl text-xs font-bold transition-all" id="t-p3-btn">تواصل للمؤسسات</button>
             </div>
         </div>
 
         <!-- Media Upload Zone -->
         <div class="glass-card p-5 rounded-2xl space-y-3 text-center border-dashed border-2 border-purple-500/30">
             <span class="text-2xl">📁</span>
-            <h4 class="text-xs font-bold text-gray-300">ارفع الصور، المقالات، أو موادك الإعلانية</h4>
-            <p class="text-[10px] text-gray-500">اضغط هنا لرفع صور المنتجات، المشروبات، أو نصوص المقالات</p>
+            <h4 class="text-xs font-bold text-gray-300" id="t-upload-title">ارفع الصور، المقالات، أو موادك الإعلانية</h4>
+            <p class="text-[10px] text-gray-500" id="t-upload-desc">اضغط هنا لرفع صور المنتجات، المشروبات، أو نصوص المقالات</p>
             <input type="file" id="fileUpload" class="hidden" multiple onchange="handleFileSelect(event)">
-            <button onclick="document.getElementById('fileUpload').click()" class="bg-purple-600/30 hover:bg-purple-600/50 text-purple-300 text-xs py-2 px-4 rounded-xl border border-purple-500/30 transition-all">
+            <button onclick="document.getElementById('fileUpload').click()" class="bg-purple-600/30 hover:bg-purple-600/50 text-purple-300 text-xs py-2 px-4 rounded-xl border border-purple-500/30 transition-all" id="t-upload-btn">
                 استعراض الملفات من الجهاز
             </button>
             <div id="fileList" class="text-xs text-emerald-400 mt-2"></div>
@@ -167,38 +177,283 @@
     </div>
 
     <script>
+        // قاموس الترجمات للغات الخمس
+        const translations = {
+            ar: {
+                subtitle: "GLOBAL AD INTELLIGENCE",
+                roasLabel: "عائد الإنفاق (ROAS)",
+                budgetLabel: "الميزانية النشطة",
+                channelsTitle: "القنوات الإعلانية المربوطة",
+                genBtn: "⚡ توليد النصوص والحملة التسويقية",
+                resTitle: "النتائج والاستراتيجية المقترحة:",
+                promptPlaceholder: "اكتب وصف نشاطك أو حملتك الإعلانية هنا...",
+                pricingTitle: "🚀 اختر باقة أتمتة الحملات",
+                pricingSubtitle: "ارتقِ بمبيعاتك مع حلول الذكاء الاصطناعي المتقدمة",
+                currency: "دينار/شهر",
+                p1Title: "الباقة الأساسية (Starter)",
+                p1f1: "✅ 5 منشورات ذكية شهرياً",
+                p1f2: "✅ توليد نصوص تسويقية بالذكاء الاصطناعي",
+                p1f3: "✅ ربط منصتين إعلانيتين",
+                p1Btn: "اختر الأساسية",
+                badgePopular: "الأكثر طلباً ⭐",
+                p2Title: "باقة النمو والوكالات (Growth)",
+                p2f1: "✅ 12 منشوراً وفيديو موشن احترافي شهرياً",
+                p2f2: "✅ كتابة محتوى إعلاني وسيناريوهات تسويقية",
+                p2f3: "✅ نشر وتوزيع آلي وإدارة الحملات الممولة",
+                p2f4: "✅ ربط جميع المنصات الأربع",
+                p2Btn: "اشترك الآن وابدأ الحملة",
+                p3Title: "باقة المؤسسات (Enterprise)",
+                p3f1: "✅ حملات غير محدودة وأتمتة كاملة",
+                p3f2: "✅ إشراف وخبير تسويق مخصص",
+                p3f3: "✅ تقارير أداء متقدمة وتحليل منافسين",
+                p3Btn: "تواصل للمؤسسات",
+                uploadTitle: "ارفع الصور، المقالات، أو موادك الإعلانية",
+                uploadDesc: "اضغط هنا لرفع صور المنتجات، المشروبات، أو نصوص المقالات",
+                uploadBtn: "استعراض الملفات من الجهاز",
+                fileSelected: "تم اختيار ملفات بنجاح وسيتم معالجتها."
+            },
+            en: {
+                subtitle: "GLOBAL AD INTELLIGENCE",
+                roasLabel: "Avg. ROAS",
+                budgetLabel: "Active Spend",
+                channelsTitle: "CONNECTED CHANNELS",
+                genBtn: "⚡ Generate Ad & Marketing Campaign",
+                resTitle: "Suggested Strategy & Results:",
+                promptPlaceholder: "Describe your business or ad campaign here...",
+                pricingTitle: "🚀 Choose Your Automation Plan",
+                pricingSubtitle: "Scale your sales with advanced AI solutions",
+                currency: "JOD/mo",
+                p1Title: "Starter Plan",
+                p1f1: "✅ 5 Smart Posts per month",
+                p1f2: "✅ AI Ad Copy Generation",
+                p1f3: "✅ Connect 2 Ad Channels",
+                p1Btn: "Choose Starter",
+                badgePopular: "Best Value ⭐",
+                p2Title: "Growth & Agency Plan",
+                p2f1: "✅ 12 Pro Motion Videos/Posts monthly",
+                p2f2: "✅ Ad Copywriting & Video Scripts",
+                p2f3: "✅ Auto-Publishing & Campaign Management",
+                p2f4: "✅ Connect all 4 Ad Networks",
+                p2Btn: "Subscribe & Launch Campaign",
+                p3Title: "Enterprise Plan",
+                p3f1: "✅ Unlimited Campaigns & Full Automation",
+                p3f2: "✅ Dedicated Marketing Expert",
+                p3f3: "✅ Advanced Analytics & Competitor Insights",
+                p3Btn: "Contact Enterprise",
+                uploadTitle: "Upload Images, Articles, or Ad Materials",
+                uploadDesc: "Click here to upload product images or text files",
+                uploadBtn: "Browse Device Files",
+                fileSelected: "Files successfully selected for AI processing."
+            },
+            es: {
+                subtitle: "GLOBAL AD INTELLIGENCE",
+                roasLabel: "ROAS Promedio",
+                budgetLabel: "Gasto Activo",
+                channelsTitle: "CANALES CONECTADOS",
+                genBtn: "⚡ Generar Anuncio y Campaña",
+                resTitle: "Estrategia y Resultados Sugeridos:",
+                promptPlaceholder: "Describe tu negocio o campaña publicitaria aquí...",
+                pricingTitle: "🚀 Elige tu Plan de Automatización",
+                pricingSubtitle: "Eleva tus ventas con soluciones de IA avanzadas",
+                currency: "JOD/mes",
+                p1Title: "Plan Básico",
+                p1f1: "✅ 5 publicaciones inteligentes al mes",
+                p1f2: "✅ Generación de textos publicitarios con IA",
+                p1f3: "✅ Conectar 2 canales de anuncios",
+                p1Btn: "Elegir Básico",
+                badgePopular: "Más Popular ⭐",
+                p2Title: "Plan Crecimiento y Agencia",
+                p2f1: "✅ 12 videos y publicaciones mensuales",
+                p2f2: "✅ Copywriting y guiones de video",
+                p2f3: "✅ Publicación automática y gestión",
+                p2f4: "✅ Conectar los 4 canales de anuncios",
+                p2Btn: "Suscribirse y Lanzar Campaña",
+                p3Title: "Plan Empresarial",
+                p3f1: "✅ Campañas ilimitadas y automatización",
+                p3f2: "✅ Experto en marketing dedicado",
+                p3f3: "✅ Informes avanzados y análisis",
+                p3Btn: "Contactar Ventas",
+                uploadTitle: "Sube imágenes, artículos o materiales",
+                uploadDesc: "Haz clic aquí para subir fotos de productos o textos",
+                uploadBtn: "Explorar Archivos",
+                fileSelected: "Archivos seleccionados correctamente para IA."
+            },
+            fr: {
+                subtitle: "GLOBAL AD INTELLIGENCE",
+                roasLabel: "ROAS Moyen",
+                budgetLabel: "Budget Actif",
+                channelsTitle: "CANAUX CONNECTÉS",
+                genBtn: "⚡ Générer une Campagne Publicitaire",
+                resTitle: "Stratégie et Résultats Suggérés :",
+                promptPlaceholder: "Décrivez votre entreprise ou campagne publicitaire ici...",
+                pricingTitle: "🚀 Choisissez Votre Plan d'Automatisation",
+                pricingSubtitle: "Augmentez vos ventes grâce à l'IA avancée",
+                currency: "JOD/mois",
+                p1Title: "Plan Starter",
+                p1f1: "✅ 5 publications intelligentes par mois",
+                p1f2: "✅ Génération de textes publicitaires par IA",
+                p1f3: "✅ Connecter 2 canaux publicitaires",
+                p1Btn: "Choisir Starter",
+                badgePopular: "Meilleure Valeur ⭐",
+                p2Title: "Plan Croissance & Agence",
+                p2f1: "✅ 12 vidéos et posts professionnels / mois",
+                p2f2: "✅ Rédaction publicitaire et scripts vidéo",
+                p2f3: "✅ Publication automatique et gestion",
+                p2f4: "✅ Connecter les 4 réseaux publicitaires",
+                p2Btn: "S'abonner et Lancer",
+                p3Title: "Plan Entreprise",
+                p3f1: "✅ Campagnes illimitées & automatisation",
+                p3f2: "✅ Expert marketing dédié",
+                p3f3: "✅ Analyses avancées et concurrence",
+                p3Btn: "Contacter l'Entreprise",
+                uploadTitle: "Téléchargez des images ou des articles",
+                uploadDesc: "Cliquez ici pour télécharger des photos de produits",
+                uploadBtn: "Parcourir les Fichiers",
+                fileSelected: "Fichiers sélectionnés pour le traitement IA."
+            },
+            zh: {
+                subtitle: "全球广告智能系统",
+                roasLabel: "平均广告支出回报率 (ROAS)",
+                budgetLabel: "活跃预算",
+                channelsTitle: "已连接的广告渠道",
+                genBtn: "⚡ 生成广告与营销活动",
+                resTitle: "推荐策略与结果：",
+                promptPlaceholder: "在此处描述您的业务或广告活动...",
+                pricingTitle: "🚀 选择您的自动化方案",
+                pricingSubtitle: "使用先进的人工智能解决方案提升您的销量",
+                currency: "约旦第纳尔/月",
+                p1Title: "基础版 (Starter)",
+                p1f1: "✅ 每月 5 篇智能发布",
+                p1f2: "✅ AI 智能文案生成",
+                p1f3: "✅ 连接 2 个广告渠道",
+                p1Btn: "选择基础版",
+                badgePopular: "最受欢迎 ⭐",
+                p2Title: "增长与代理商版 (Growth)",
+                p2f1: "✅ 每月 12 个专业动态视频与帖子",
+                p2f2: "✅ 广告文案与视频脚本编写",
+                p2f3: "✅ 自动发布与付费广告管理",
+                p2f4: "✅ 连接全部 4 个广告网络",
+                p2Btn: "立即订阅并启动活动",
+                p3Title: "企业版 (Enterprise)",
+                p3f1: "✅ 无限制活动与全面自动化",
+                p3f2: "✅ 专属营销专家支持",
+                p3f3: "✅ 高级数据报告与竞品分析",
+                p3Btn: "联系企业销售",
+                uploadTitle: "上传图片、文章或广告素材",
+                uploadDesc: "点击此处上传产品图片或文本文档",
+                uploadBtn: "浏览设备文件",
+                fileSelected: "文件已成功选择并准备进行 AI 处理。"
+            }
+        };
+
+        function changeLanguage(lang) {
+            const t = translations[lang];
+            const htmlRoot = document.getElementById('htmlRoot');
+
+            // ضبط اتجاه الصفحة حسب اللغة (عربي RTL وبقية اللغات LTR)
+            if (lang === 'ar') {
+                htmlRoot.setAttribute('dir', 'rtl');
+                htmlRoot.setAttribute('lang', 'ar');
+            } else {
+                htmlRoot.setAttribute('dir', 'ltr');
+                htmlRoot.setAttribute('lang', lang);
+            }
+
+            // تحديث النصوص ديناميكياً
+            document.getElementById('t-subtitle').innerText = t.subtitle;
+            document.getElementById('t-roas-label').innerText = t.roasLabel;
+            document.getElementById('t-budget-label').innerText = t.budgetLabel;
+            document.getElementById('t-channels-title').innerText = t.channelsTitle;
+            document.getElementById('t-gen-btn').innerText = t.genBtn;
+            document.getElementById('t-res-title').innerText = t.resTitle;
+            document.getElementById('adPrompt').placeholder = t.promptPlaceholder;
+            
+            document.getElementById('t-pricing-title').innerText = t.pricingTitle;
+            document.getElementById('t-pricing-subtitle').innerText = t.pricingSubtitle;
+
+            // العملة والباقات
+            document.querySelectorAll('.t-currency').forEach(el => el.innerText = t.currency);
+
+            document.getElementById('t-p1-title').innerText = t.p1Title;
+            document.getElementById('t-p1-f1').innerText = t.p1f1;
+            document.getElementById('t-p1-f2').innerText = t.p1f2;
+            document.getElementById('t-p1-f3').innerText = t.p1f3;
+            document.querySelectorAll('.t-p-btn')[0].innerText = t.p1Btn;
+
+            document.getElementById('t-badge-popular').innerText = t.badgePopular;
+            document.getElementById('t-p2-title').innerText = t.p2Title;
+            document.getElementById('t-p2-f1').innerText = t.p2f1;
+            document.getElementById('t-p2-f2').innerText = t.p2f2;
+            document.getElementById('t-p2-f3').innerText.innerText = t.p2f3;
+            document.getElementById('t-p2-f4').innerText = t.p2f4;
+            document.getElementById('t-p2-btn').innerText = t.p2Btn;
+
+            document.getElementById('t-p3-title').innerText = t.p3Title;
+            document.getElementById('t-p3-f1').innerText = t.p3f1;
+            document.getElementById('t-p3-f2').innerText = t.p3f2;
+            document.getElementById('t-p3-f3').innerText = t.p3f3;
+            document.getElementById('t-p3-btn').innerText = t.p3Btn;
+
+            document.getElementById('t-upload-title').innerText = t.uploadTitle;
+            document.getElementById('t-upload-desc').innerText = t.uploadDesc;
+            document.getElementById('t-upload-btn').innerText = t.uploadBtn;
+        }
+
         function generateAd() {
             const prompt = document.getElementById('adPrompt').value;
             const btn = document.getElementById('generateBtn');
             const resultBox = document.getElementById('resultBox');
             const resultText = document.getElementById('resultText');
+            const currentLang = document.getElementById('langSelect').value;
 
             if(!prompt.trim()) {
-                alert('يرجى كتابة وصف نشاطك أو حملتك أولاً.');
+                alert(currentLang === 'ar' ? 'يرجى كتابة وصف نشاطك أو حملتك أولاً.' : 'Please enter your business or campaign description first.');
                 return;
             }
 
             btn.disabled = true;
-            btn.innerHTML = '<span>⏳ جاري التحليل وصياغة الحملة...</span>';
+            btn.innerHTML = `<span>⏳ ${currentLang === 'ar' ? 'جاري التحليل والصياغة...' : 'Analyzing & Generating...'}</span>`;
 
             setTimeout(() => {
                 btn.disabled = false;
-                btn.innerHTML = '<span>⚡ توليد النصوص والحملة التسويقية</span>';
+                btn.innerHTML = `<span id="t-gen-btn">${translations[currentLang].genBtn}</span>`;
                 resultBox.classList.remove('hidden');
                 
-                // محاكاة استجابة ذكية ناجحة
-                resultText.innerHTML = `تم توليد الحملة بنجاح بنسبة مطابقة 98% لنشاطك:<br>
-                • <strong>عنوان الإعلان:</strong> اكتشف القوة الحقيقية لمنتجك معنا!<br>
-                • <strong>الجمهور المستهدف:</strong> مهتمون بالتسوق الإلكتروني، الفئة العمرية (18-35).<br>
-                • <strong>المنصات المقترحة:</strong> Snapchat & TikTok لأعلى عائد ROAS متوقع.`;
+                if(currentLang === 'ar') {
+                    resultText.innerHTML = `تم توليد الحملة بنجاح بنسبة مطابقة 98% لنشاطك:<br>
+                    • <strong>عنوان الإعلان:</strong> اكتشف القوة الحقيقية لمنتجك معنا!<br>
+                    • <strong>الجمهور المستهدف:</strong> مهتمون بالتسوق الإلكتروني، الفئة العمرية (18-35).<br>
+                    • <strong>المنصات المقترحة:</strong> Snapchat & TikTok لأعلى عائد ROAS متوقع.`;
+                } else if(currentLang === 'en') {
+                    resultText.innerHTML = `Campaign successfully generated with 98% match:<br>
+                    • <strong>Ad Headline:</strong> Discover the true power of your product with us!<br>
+                    • <strong>Target Audience:</strong> E-commerce shoppers, age group (18-35).<br>
+                    • <strong>Recommended Platforms:</strong> Snapchat & TikTok for highest expected ROAS.`;
+                } else if(currentLang === 'es') {
+                    resultText.innerHTML = `Campaña generada exitosamente (98% de coincidencia):<br>
+                    • <strong>Titular:</strong> ¡Descubre el verdadero poder de tu producto!<br>
+                    • <strong>Público objetivo:</strong> Compradores online, 18-35 años.<br>
+                    • <strong>Plataformas sugeridas:</strong> Snapchat y TikTok.`;
+                } else if(currentLang === 'fr') {
+                    resultText.innerHTML = `Campagne générée avec succès (correspondance de 98%) :<br>
+                    • <strong>Titre :</strong> Découvrez la vraie puissance de votre produit !<br>
+                    • <strong>Public cible :</strong> Acheteurs en ligne, 18-35 ans.<br>
+                    • <strong>Plateformes suggérées :</strong> Snapchat & TikTok.`;
+                } else if(currentLang === 'zh') {
+                    resultText.innerHTML = `营销活动已成功生成，匹配度 98%：<br>
+                    • <strong>广告标题：</strong> 与我们一起发掘您产品的真正力量！<br>
+                    • <strong>目标受众：</strong> 网购消费者，年龄层 (18-35)。<br>
+                    • <strong>推荐平台：</strong> Snapchat 和 TikTok 以获得最高预期回报。`;
+                }
             }, 1500);
         }
 
         function handleFileSelect(event) {
             const files = event.target.files;
             const fileList = document.getElementById('fileList');
+            const currentLang = document.getElementById('langSelect').value;
             if(files.length > 0) {
-                fileList.innerHTML = `تم اختيار ${files.length} ملف بنجاح وسيتم معالجتها للذكاء الاصطناعي.`;
+                fileList.innerHTML = currentLang === 'ar' ? `تم اختيار ${files.length} ملف بنجاح للمعالجة الذكية.` : `${files.length} file(s) selected successfully for AI processing.`;
             }
         }
     </script>
