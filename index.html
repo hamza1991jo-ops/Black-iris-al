@@ -3,150 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Black Iris AI - وكالة التسويق الذكية</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <title>Black Iris AI - منصة الإعلانات الذكية</title>
     <style>
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background: linear-gradient(135deg, #06020c 0%, #110724 50%, #030107 100%);
-            color: #ffffff;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        .glass-panel {
-            background: rgba(18, 12, 30, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-        }
-        .glow-btn {
-            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
-        }
-        .chat-bubble-ai {
-            background: rgba(139, 92, 246, 0.12);
-            border: 1px solid rgba(139, 92, 246, 0.25);
-        }
-        .chat-bubble-user {
-            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
-        }
-        /* تحسين مظهر التمرير */
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(139, 92, 246, 0.3);
-            border-radius: 4px;
-        }
+        body { font-family: Tahoma, sans-serif; background-color: #f9f9f9; text-align: center; padding: 50px; }
+        h1 { color: #333; }
+        p { color: #666; font-size: 18px; }
+        .btn { background-color: #007bff; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-size: 20px; display: inline-block; margin-top: 20px; }
     </style>
 </head>
-<body class="p-2 md:p-4">
+<body>
 
-    <div class="max-w-md mx-auto w-full h-full flex flex-col justify-between glass-panel rounded-3xl overflow-hidden shadow-2xl">
+    <h1>أطلق إعلاناتك الاحترافية على السوشيال ميديا بضغط زر واحدة!</h1>
+    <p>دع موقعنا يحلل منتجك، يكتب نصوصك التسويقية، ويستهدف جمهورك بدقة تلقائياً.</p>
+    
+    <a href="#" class="btn">ابدأ حملتك الأولى الآن مجاناً</a>
 
-        <!-- Header / الهيكل العلوي -->
-        <div class="p-3.5 border-b border-purple-500/20 flex items-center justify-between bg-black/50">
-            <div class="flex items-center space-x-3 space-x-reverse">
-                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-600 via-pink-500 to-emerald-400 flex items-center justify-center text-lg shadow-lg animate-pulse">🌿</div>
-                <div>
-                    <div class="flex items-center gap-1.5">
-                        <h1 class="text-xs font-extrabold text-white">Black Iris AI</h1>
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    </div>
-                    <span class="text-[9px] text-purple-300 font-medium">الشريك الاستراتيجي والمدير التنفيذي</span>
-                </div>
-            </div>
-            <button onclick="openPricing()" class="bg-purple-600/30 hover:bg-purple-600/50 text-purple-200 text-[10px] px-2.5 py-1.5 rounded-xl border border-purple-500/40 font-bold transition-all flex items-center gap-1">
-                💎 الباقات والتحصيل
-            </button>
-        </div>
-
-        <!-- Chat Messages Area / ساحة المحادثة التفاعلية -->
-        <div id="chatContainer" class="flex-1 overflow-y-auto p-4 space-y-4">
-            <div class="flex items-start gap-2.5">
-                <div class="w-7 h-7 rounded-xl bg-purple-600 flex items-center justify-center text-xs shrink-0 shadow-md">🏛️</div>
-                <div class="space-y-1.5 max-w-[85%]">
-                    <span class="text-[9px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full font-bold inline-block">الإدارة العليا والاستراتيجية</span>
-                    <div class="chat-bubble-ai p-3 rounded-2xl rounded-tr-none text-xs text-gray-100 space-y-2 leading-relaxed">
-                        <p>أهلاً بك مجدداً يا شريكي. أنا جاهز لإدارة العمليات بالكامل عبر منصات <strong>سناب شات، تيك توك، فيسبوك، وإنستغرام</strong>.</p>
-                        <p>أخبرني عن مشروعك أو اطلب النصوص، الأمثلة، وفيديوهات الإعلانات لنبدأ التنفيذ الفوري!</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Input Area / صندوق الإدخال الذكي -->
-        <div class="p-3 bg-black/60 border-t border-purple-500/20">
-            <div class="flex items-center gap-2 bg-black/50 border border-purple-500/40 rounded-2xl p-1.5 focus-within:border-pink-500 transition-all">
-                <input type="text" id="userInput" class="flex-1 bg-transparent text-xs text-white placeholder-gray-500 focus:outline-none px-2" placeholder="اطلب نصاً، مثالاً، أو فكرة إعلانية...">
-                <button onclick="handleSend()" class="glow-btn text-white px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1">
-                    إرسال 🚀
-                </button>
-            </div>
-        </div>
-
-    </div>
-
-    <script>
-        const chatContainer = document.getElementById('chatContainer');
-        const userInput = document.getElementById('userInput');
-
-        function appendMessage(text, sender = 'user', department = 'الشريك التنفيذي الذكي') {
-            const div = document.createElement('div');
-            if (sender === 'user') {
-                div.className = "flex items-end justify-end gap-2";
-                div.innerHTML = `<div class="chat-bubble-user p-3 rounded-2xl rounded-tl-none text-xs text-white max-w-[82%] leading-relaxed shadow-md">${text}</div><div class="w-7 h-7 rounded-xl bg-pink-600 flex items-center justify-center text-xs shrink-0 shadow-md">👤</div>`;
-            } else {
-                div.className = "flex items-start gap-2.5";
-                div.innerHTML = `<div class="w-7 h-7 rounded-xl bg-purple-600 flex items-center justify-center text-xs shrink-0 shadow-md">🏛️</div><div class="space-y-1.5 max-w-[85%]"><span class="text-[9px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full font-bold inline-block">${department}</span><div class="chat-bubble-ai p-3 rounded-2xl rounded-tr-none text-xs text-gray-100 leading-relaxed">${text}</div></div>`;
-            }
-            chatContainer.appendChild(div);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        function handleSend() {
-            const text = userInput.value.trim();
-            if (!text) return;
-            appendMessage(text, 'user');
-            userInput.value = '';
-
-            setTimeout(() => {
-                let reply = "";
-                let dept = "قسم الإعلام الإعلاني والـ Media Buying";
-                const lower = text.toLowerCase();
-
-                // عقل تحليلي متكامل يقرأ ما يطلبه المستخدم حرفياً
-                if (lower.includes('مثال') || lower.includes('فيديو') || lower.includes('صور') || lower.includes('امثله')) {
-                    dept = "قسم التصميم والإبداع (Creative)";
-                    reply = `🎬 <strong>نموذج فيديو ترويجي تفاعلي (جاهز للتصوير لمحل الهواتف):</strong><br><br>` +
-                            `• <strong>الخطاف (أول 3 ثوانٍ):</strong> لقطة قريبة لشاشة هاتف مكسورة مع صوت مؤثر، يليه ظهور الجهاز الجديد بلمعان جذاب.<br>` +
-                            `• <strong>النص المنطوق:</strong> *"شاشتك انكسرت أو تبحث عن أقوى اكسسوارات الموبايل؟ وفرنا لك الصيانة الفورية مع ضمان حقيقي وهدية مع كل طلب!"*<br>` +
-                            `• <strong>المنصات المستهدفة:</strong> تيك توك وسناب شات لضمان أعلى وصول محلي.`;
-                } else if (lower.includes('سعر') || lower.includes('باقة') || lower.includes('اشتراك')) {
-                    dept = "قسم الحسابات والتحصيل المالي";
-                    reply = `💰 <strong>تفاصيل الباقات المعتمدة للسوق العربي:</strong><br>` +
-                            `• <strong>باقة النمو (65 دينار شهرياً):</strong> إدارة كاملة ومستمرة لحملاتك على المنصات الأربع (سناب، تيك توك، فيسبوك، إنستغرام).<br>` +
-                            `هل ترغب بتفعيل الرابط المالي الآلي الآن وخصم المبلغ لإطلاق الحملة فوراً؟`;
-                } else {
-                    reply = `بصفتي شريكك التنفيذي، قمت بدراسة طلبك (<strong>${text}</strong>) وتوجيه الأقسام المعنية لتجهيز الحملة الإعلانية وتحسين عائد الإنفاق (ROAS). هل نبدأ بصياغة النصوص التسويقية الموجهة للزبائن؟`;
-                }
-
-                appendMessage(reply, 'ai', dept);
-            }, 850);
-        }
-
-        function openPricing() {
-            appendMessage("أرغب في مراجعة الباقات والتحصيل المالي", 'user');
-            setTimeout(() => {
-                appendMessage("💳 <strong>بوابة التحصيل والاشتراكات الآمنة:</strong><br>اختر الباقة المناسبة لنشاطك:<br>1. <strong>باقة النمو:</strong> 65 دينار / شهرياً.<br>2. <strong>باقة المؤسسات:</strong> 120 دينار / شهرياً.<br><br>تم تفعيل الربط المالي وجاهزية إصدار الفواتير الآلية بضغطة زر!", 'ai', "قسم الحسابات والتحصيل");
-            }, 700);
-        }
-
-        userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleSend();
-        });
-    </script>
 </body>
 </html>
