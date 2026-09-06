@@ -7,32 +7,48 @@
     <style>
         body { font-family: Tahoma, sans-serif; background-color: #f9f9f9; text-align: center; padding: 20px; }
         .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 400px; margin: 15px auto; }
-        h1 { color: #222; font-size: 20px; }
+        h1 { color: #222; font-size: 19px; }
         p { color: #555; font-size: 14px; }
         input[type="email"], input[type="text"] { width: 90%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; }
         .btn-green { background-color: #28a745; color: white; padding: 12px; border: none; border-radius: 6px; font-size: 16px; width: 95%; cursor: pointer; font-weight: bold; }
         .btn-blue { background-color: #007bff; color: white; padding: 12px; border: none; border-radius: 6px; font-size: 16px; width: 95%; cursor: pointer; font-weight: bold; }
-        .msg { margin-top: 10px; font-size: 14px; font-weight: bold; }
+        .pricing-box { background: #eef2f7; padding: 15px; border-radius: 8px; margin-top: 10px; font-size: 13px; color: #333; text-align: right; }
+        .result-box { background: #e8f5e9; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 14px; color: #2e7d32; display: none; text-align: right; }
     </style>
 </head>
 <body>
 
-    <!-- الجزء الأول: التسجيل وبدء الـ 15 يوماً -->
+    <!-- 1. قسم التسجيل وفترة التجربة -->
     <div class="card">
         <h1>ابدأ فترتك التجريبية (15 يوماً مجاناً)</h1>
-        <p>سجل بريدك الإلكتروني لفتح حسابك التجريبي الفوري.</p>
+        <p>سجل بريدك لفتح حسابك التجريبي الفوري.</p>
         <input type="email" id="userEmail" placeholder="أدخل بريدك الإلكتروني...">
         <button class="btn-green" onclick="registerUser()">تسجيل وفعل التجربة</button>
-        <p id="regMsg" class="msg" style="color: #28a745;"></p>
+        <p id="regMsg" style="margin-top: 10px; color: #28a745; font-weight: bold; font-size: 14px;"></p>
     </div>
 
-    <!-- الجزء الثاني: إدخال وصف المنتج وتوليد الإعلان -->
+    <!-- 2. قسم إطلاق الإعلان الذكي وعرض النتيجة -->
     <div class="card">
         <h1>إطلاق الإعلان الذكي</h1>
-        <p>ما هو منتجك لكي نقوم بتحليله وكتابة إعلانه؟</p>
+        <p>ما هو منتجك لنقوم بكتابة إعلانه واستهدافه؟</p>
         <input type="text" id="productDesc" placeholder="مثال: عطور فاخرة في الأردن">
         <button class="btn-blue" onclick="generateAd()">توليد الإعلان وإطلاقه</button>
-        <p id="adMsg" class="msg" style="color: #007bff;"></p>
+        
+        <!-- صندوق عرض النتيجة بعد التوليد -->
+        <div id="resultBox" class="result-box">
+            <b>✨ النص المقترح من الذكاء الاصطناعي:</b>
+            <p id="aiOutput" style="margin: 5px 0 0 0; color: #1b5e20;"></p>
+        </div>
+    </div>
+
+    <!-- 3. قسم الباقات الشهرية -->
+    <div class="card">
+        <h1>الباقات الشهرية بعد التجربة</h1>
+        <div class="pricing-box">
+            • <b>الأساسية (Starter):</b> حملات محدودة ومنصة واحدة.<br>
+            • <b>الاحترافية (Pro):</b> حملات غير محدودة وكل المنصات (موصى بها).<br>
+            • <b>الشركات (Enterprise):</b> للوكالات والمميزات المتقدمة.
+        </div>
     </div>
 
     <script>
@@ -42,7 +58,7 @@
                 alert("الرجاء إدخال بريد إلكتروني صحيح!");
                 return;
             }
-            document.getElementById('regMsg').innerText = "✅ تم تفعيل فترة الـ 15 يوماً المجانية بنجاح!";
+            document.getElementById('regMsg'].innerText = "✅ تم تفعيل الـ 15 يوماً المجانية لحسابك!";
         }
 
         function generateAd() {
@@ -51,7 +67,12 @@
                 alert("الرجاء كتابة وصف المنتج أولاً!");
                 return;
             }
-            document.getElementById('adMsg').innerText = "✨ جاري تحليل المنتج واختيار الجمهور وإطلاق الحملة...";
+            // إظهار النتيجة المحاكاة للذكاء الاصطناعي
+            var resBox = document.getElementById('resultBox');
+            var outText = document.getElementById('aiOutput');
+            
+            resBox.style.display = "block";
+            outText.innerText = "اكتشف الفخامة مع '" + desc + "'! اطلب الآن واحصل على توصيل مجاني واستفد من العرض الحصري عبر منصات التواصل الاجتماعي.";
         }
     </script>
 
