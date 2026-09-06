@@ -3,268 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Black Iris AI - Global Ad Intelligence</title>
+    <title>Black Iris AI - منصة التسويق الذكي</title>
     <style>
-        body {
-            background-color: #0d061a;
-            color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 15px;
+        :root {
+            --bg-color: #0c0915;
+            --card-bg: #161224;
+            --accent-purple: #8b5cf6;
+            --accent-glow: rgba(139, 92, 246, 0.4);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --success: #10b981;
         }
-        .header {
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 16px;
+            padding-bottom: 80px;
+        }
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 12px 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 24px;
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
         }
         .logo-area {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
         .logo-icon {
-            background: #9d4edd;
-            width: 35px;
-            height: 35px;
-            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #a855f7, #6366f1);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 20px;
+        }
+        h1 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        p.subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .badge-vip {
+            background: rgba(139, 92, 246, 0.2);
+            color: #d8b4fe;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
             font-weight: bold;
+            border: 1px solid var(--accent-purple);
         }
-        .card {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
         }
-        .metrics {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .metric-box {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 12px;
-            border-radius: 10px;
+        .stat-card {
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: 14px;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .metric-value-1 { color: #b197fc; font-size: 1.2rem; font-weight: bold; }
-        .metric-value-2 { color: #63e6be; font-size: 1.2rem; font-weight: bold; }
+        .stat-title {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .stat-value.green { color: var(--success); }
+        .stat-value.purple { color: #c084fc; }
+        
+        .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #e5e7eb;
+        }
         
         .channels-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 24px;
         }
         .channel-card {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 10px;
-            border-radius: 8px;
+            background: var(--card-bg);
+            padding: 12px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .dot {
+        .channel-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .status-dot {
             width: 8px;
             height: 8px;
-            background-color: #51cf66;
+            background-color: var(--success);
             border-radius: 50%;
-            box-shadow: 0 0 8px #51cf66;
+            box-shadow: 0 0 8px var(--success);
         }
-        textarea, input[type="text"] {
+        
+        .generator-box {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            margin-bottom: 24px;
+        }
+        textarea {
             width: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-            color: #fff;
-            padding: 10px;
-            box-sizing: border-box;
+            background: #0f0c1b;
+            border: 1px solid #374151;
+            border-radius: 10px;
+            padding: 12px;
+            color: white;
+            font-size: 14px;
             resize: none;
-            height: 70px;
-            margin-bottom: 10px;
-            font-family: inherit;
+            height: 90px;
+            margin-bottom: 12px;
         }
-        button.generate-btn {
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+        }
+        .btn-primary {
             width: 100%;
-            background: linear-gradient(135deg, #7048e8, #9d4edd);
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 1rem;
+            box-shadow: 0 4px 12px var(--accent-glow);
         }
-        .result-box {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid #9d4edd;
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 12px;
-            display: none;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        .footer {
+        .footer-note {
             text-align: center;
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.4);
+            font-size: 11px;
+            color: var(--text-muted);
             margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
-    <!-- الهيدر -->
-    <div class="header">
+    <header>
         <div class="logo-area">
             <div class="logo-icon">🌿</div>
             <div>
-                <div style="font-weight: bold; font-size: 0.95rem;">Black Iris AI</div>
-                <div style="font-size: 0.7rem; color: rgba(255,255,255,0.6);">Global Ad Intelligence</div>
+                <h1>Black Iris AI</h1>
+                <p class="subtitle">Global Ad Intelligence</p>
             </div>
         </div>
-        <div style="background: #7048e8; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: bold;">VIP</div>
+        <div class="badge-vip">VIP وكالة</div>
+    </header>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-title">الميزانية النشطة</div>
+            <div class="stat-value purple">$4,250</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">عائد الإنفاق (ROAS)</div>
+            <div class="stat-value green">4.8x</div>
+        </div>
     </div>
 
-    <!-- لوحة المؤشرات -->
-    <div class="metrics">
-        <div class="metric-box">
-            <div style="font-size: 0.75rem; color: rgba(255,255,255,0.6);">Active Spend</div>
-            <div class="metric-value-1">$4,250</div>
-        </div>
-        <div class="metric-box">
-            <div style="font-size: 0.75rem; color: rgba(255,255,255,0.6);">Avg. ROAS</div>
-            <div class="metric-value-2">4.8x</div>
-        </div>
-    </div>
-
-    <!-- القنوات المربوطة -->
-    <div style="font-size: 0.85rem; font-weight: bold; margin-bottom: 8px; color: rgba(255,255,255,0.8);">CONNECTED CHANNELS</div>
+    <div class="section-title">القنوات المرتبطة للإدارة الآلية</div>
     <div class="channels-grid">
-        <div class="channel-card"><span>👻 Snapchat</span><div class="dot"></div></div>
-        <div class="channel-card"><span>🎵 TikTok</span><div class="dot"></div></div>
-        <div class="channel-card"><span>♾️ Meta Ads</span><div class="dot"></div></div>
-        <div class="channel-card"><span>🌐 Google</span><div class="dot"></div></div>
-    </div>
-
-    <!-- أداة توليد الإعلانات والنصوص بالذكاء الاصطناعي -->
-    <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <span style="font-weight: bold; font-size: 0.9rem;">✨ Iris AI Ad Generator</span>
-            <span style="font-size: 0.65rem; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;">GPT-4 Turbo</span>
+        <div class="channel-card">
+            <div class="channel-info">📸 سناب شات</div>
+            <div class="status-dot"></div>
         </div>
-        <textarea id="productInput" placeholder="اكتب وصف منتجك أو متجرك هنا (مثال: عطر فاخر للرجال)..."></textarea>
-        <button class="generate-btn" onclick="generateAd()">⚡ توليد النصوص والحملة التسويقية</button>
-        
-        <div id="resultBox" class="result-box">
-            <strong style="color: #b197fc;">النتائج والاستراتيجية المقترحة:</strong>
-            <div id="resultText" style="margin-top: 6px;"></div>
+        <div class="channel-card">
+            <div class="channel-info">🎵 تيك توك</div>
+            <div class="status-dot"></div>
+        </div>
+        <div class="channel-card">
+            <div class="channel-info">♾️ ميتا (فيسبوك/إنستغرام)</div>
+            <div class="status-dot"></div>
+        </div>
+        <div class="channel-card">
+            <div class="channel-info">🔍 إعلانات جوجل</div>
+            <div class="status-dot"></div>
         </div>
     </div>
 
-    <!-- إدارة الصور والفيديوهات (AI Media Hub) -->
-    <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <span style="font-weight: bold; font-size: 0.9rem;">🎨 AI Visuals & Video Studio</span>
-            <span style="font-size: 0.65rem; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;">Midjourney & Runway</span>
-        </div>
-        <input type="text" id="mediaInput" placeholder="صف التصميم أو الفيديو المطلوب (مثال: فيديو قصير لمنتج عطر يتحرك ببطء)...">
-        <button class="generate-btn" style="background: linear-gradient(135deg, #2b8a3e, #40c057);" onclick="generateMedia()">🎬 توليد الوسائط والملفات البصرية</button>
-        
-        <div id="mediaResultBox" class="result-box">
-            <strong style="color: #63e6be;">حالة التوليد البصري:</strong>
-            <div id="mediaResultText" style="margin-top: 6px;"></div>
-        </div>
+    <div class="generator-box">
+        <div class="section-title" style="margin-bottom: 8px;">✨ مولد الحملات الذكي (Iris AI)</div>
+        <p class="subtitle" style="margin-bottom: 12px;">اكتب وصف نشاطك التجاري، مطعمك، أو منتجك وسيقوم الذكاء الاصطناعي بإدارة الحملة بالكامل:</p>
+        <textarea placeholder="مثال: مطعم وجبات سريعة في عمان، نريد حملة لزيادة المبيعات والطلبات عبر الواتساب..."></textarea>
+        <button class="btn-primary" onclick="alert('جاري إطلاق الحملة وتوليد المحتوى الشهري بنجاح عبر آيفون 12! 🚀')">إطلاق الحملة وإدارة السوشيال ميديا</button>
     </div>
 
-    <div class="footer">
-        © 2026 Black Iris AI. All rights reserved. Managed globally via iPhone.
+    <div class="footer-note">
+        © 2026 Black Iris AI. مُدار بالكامل عبر الهاتف المحمول.
     </div>
 
-    <script>
-        async function generateAd() {
-            const input = document.getElementById('productInput').value;
-            const resultBox = document.getElementById('resultBox');
-            const resultText = document.getElementById('resultText');
-            
-            if (!input.trim()) {
-                alert('الرجاء كتابة وصف المنتج أو المتجر أولاً');
-                return;
-            }
-
-            // استبدل النص التالي بمفتاح OpenAI API الخاص بك
-            const apiKey = "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"; 
-
-            if (apiKey === "YOUR_OPENAI_API_KEY") {
-                alert('الرجاء وضع مفتاح OpenAI API الخاص بك داخل الكود ليتم التوليد الفعلي.');
-                return;
-            }
-
-            resultBox.style.display = 'block';
-            resultText.innerHTML = 'جاري تحليل السوق وتوليد النصوص الإعلانية... ⏳';
-
-            try {
-                const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`
-                    },
-                    body: JSON.stringify({
-                        model: "gpt-4-turbo",
-                        messages: [
-                            {
-                                role: "system",
-                                content: "أنت مدير تسويق ذكي لشركة Black Iris AI. قم بتوليد نصوص إعلانية احترافية ومقسّمة لمنصات سناب شات، تيك توك، وميتا بناءً على وصف المنتج."
-                            },
-                            {
-                                role: "user",
-                                content: input
-                            }
-                        ]
-                    })
-                });
-
-                const data = await response.json();
-                if (data.choices && data.choices.length > 0) {
-                    resultText.innerHTML = data.choices[0].message.content.replace(/\n/g, '<br>');
-                } else {
-                    resultText.innerHTML = 'حدث خطأ، تأكد من صحة المفتاح.';
-                }
-            } catch (error) {
-                resultText.innerHTML = 'تعذر الاتصال بخدمة الذكاء الاصطناعي.';
-                console.error(error);
-            }
-        }
-
-        function generateMedia() {
-            const mediaInput = document.getElementById('mediaInput').value;
-            const mediaResultBox = document.getElementById('mediaResultBox');
-            const mediaResultText = document.getElementById('mediaResultText');
-
-            if (!mediaInput.trim()) {
-                alert('الرجاء كتابة وصف التصميم أو الفيديو المطلوب أولاً');
-                return;
-            }
-
-            mediaResultBox.style.display = 'block';
-            mediaResultText.innerHTML = 'جاري معالجة الأصول البصرية وتجهيز الستوديو... ⏳';
-
-            setTimeout(() => {
-                mediaResultText.innerHTML = `تم إرسال الطلب بنجاح لاستوديوهات الذكاء الاصطناعي.<br><strong>الوصف:</strong> "${mediaInput}"<br><span style="color: #ffd43b;">(سيتم ربط مخرج الفيديو والصور هنا بالكامل فور ربط مفتاح مزود الوسائط).</span>`;
-            }, 1500);
-        }
-    </script>
 </body>
 </html>
