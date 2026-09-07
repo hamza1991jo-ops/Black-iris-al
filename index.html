@@ -142,17 +142,17 @@ def generate_and_launch_campaign(data: CampaignCreate, db: Session = Depends(get
     elif user.subscription_status == "Expired":
         raise HTTPException(status_code=403, detail="اشتراكك منتهي، يرجى الدفع لمتابعة إطلاق الحملات.")
     
-    # محاكاة تحليل الذكاء الاصطناعي لاختيار المنصة والنص التسويقي
+    # تحليل الذكاء الاصطناعي لاختيار المنصة والنص التسويقي بشكل مرتب ومنسق
     desc_lower = data.product_description.lower()
     if "عطور" in desc_lower or "ملابس" in desc_lower or "مجوهرات" in desc_lower:
-        platform = "Instagram / Snapchat"
-        ad_copy = f"✨ اكتشف الفخامة المطلقة مع عرضنا الحصري لـ {data.product_description}! اطلب الآن."
+        platform = "Instagram & Snapchat"
+        ad_copy = f"✨ تألق بإطلالة استثنائية مع {data.product_description}. اطلب قطعتك الآن!"
     elif "دورة" in desc_lower or "خدمة" in desc_lower:
         platform = "Google Search"
         ad_copy = f"💡 طور مهاراتك اليوم مع {data.product_description}. سجل الآن واحصل على استشارة مجانية."
     else:
         platform = "TikTok"
-        ad_copy = f"🔥 تريند اليوم: لا تفوت فرصة تجربة {data.product_description}! اضغط الرابط و اطلب فوراً."
+        ad_copy = f"🔥 تريند اليوم: لا تفوت فرصة تجربة {data.product_description}! اطلب الآن."
 
     # حفظ الحملة وإطلاقها
     new_campaign = CampaignModel(
