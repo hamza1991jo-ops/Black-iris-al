@@ -1,175 +1,356 @@
-from datetime import datetime, timedelta
-from typing import Optional
-from fastapi import FastAPI, HTTPException, Depends
-from pydantic import BaseModel, EmailStr
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, Float, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session, relationship
-
-SQLALCHEMY_DATABASE_URL = "sqlite:///./black_iris_ai.db"
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
-
-class UserModel(Base):
-    __tablename__ = "users"
-    id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True)
-    signup_date = Column(DateTime, default=datetime.utcnow)
-    subscription_status = Column(String, default="Trial")
-    selected_plan = Column(String, default="Free_15_Days")
-    campaigns = relationship("CampaignModel", back_populates="owner")
-
-class CampaignModel(Base):
-    __tablename__ = "campaigns"
-    id = Column(Integer, primary_key=True, index=True)
-    product_description = Column(String)
-    target_platform = Column(String)
-    ai_ad_copy = Column(String)
-    budget = Column(Float)
-    ad_status = Column(String, default="Active")
-    owner_id = Column(Integer, ForeignKey("users.id"))
-    owner = relationship("UserModel", back_populates="campaigns")
-
-Base.metadata.create_all(bind=engine)
-
-class UserCreate(BaseModel):
-    email: EmailStr
-
-class CampaignCreate(BaseModel):
-    user_email: EmailStr
-    product_description: str
-    budget: float
-
-class PlanUpgrade(BaseModel):
-    email: EmailStr
-    plan_name: str
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-app = FastAPI(
-    title="Black Iris AI Backend",
-    description="Backend API for Black Iris AI Autonomous Advertising Platform",
-    version="1.0.0"
-)
-
-@app.post("/api/register")
-def register_user(user: UserCreate, db: Session = Depends(get_db)):
-    db_user = db.query(UserModel).filter(UserModel.email == user.email).first()
-    if db_user:
-        return {"message": "User already registered", "status": db_user.subscription_status}
-    
-    new_user = UserModel(
-        email=user.email,
-        signup_date=datetime.utcnow(),
-        subscription_status="Trial",
-        selected_plan="Free_15_Days"
-    )
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    return {
-        "success": True,
-        "message": "Registered successfully with 15 days free trial",
-        "user_id": new_user.id,
-        "signup_date": new_user.signup_date
-    }
-
-@app.get("/api/check-subscription")
-def check_subscription(email: str, db: Session = Depends(get_db)):
-    user = db.query(UserModel).filter(UserModel.email == email).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    
-    if user.subscription_status == "Trial":
-        days_passed = (datetime.utcnow() - user.signup_date).days
-        if days_passed > 15:
-            user.subscription_status = "Expired"
-            db.commit()
-            return {
-                "status": "Expired",
-                "message": "Free trial period has expired, please upgrade your plan."
-            }
-        else:
-            remaining_days = 15 - days_passed
-            return {
-                "status": "Trial",
-                "remaining_days": remaining_days,
-                "message": f"You are in free trial, {remaining_days} days remaining."
-            }
-            
-    return {
-        "status": user.subscription_status,
-        "plan": user.selected_plan,
-        "message": "Account is active."
-    }
-
-@app.post("/api/generate-and-launch-campaign")
-def generate_and_launch_campaign(data: CampaignCreate, db: Session = Depends(get_db)):
-    user = db.query(UserModel).filter(UserModel.email == data.user_email).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not registered")
-    
-    if user.subscription_status == "Trial":
-        if (datetime.utcnow() - user.signup_date).days > 15:
-            user.subscription_status = "Expired"
-            db.commit()
-            raise HTTPException(status_code=403, detail="Free trial expired, please upgrade.")
-    elif user.subscription_status == "Expired":
-        raise HTTPException(status_code=403, detail="Subscription expired, please pay to continue.")
-    
-    desc_lower = data.product_description.lower()
-    if "عطور" in desc_lower or "ملابس" in desc_lower or "مجوهرات" in desc_lower or "perfume" in desc_lower or "clothes" in desc_lower:
-        platform = "Instagram & Snapchat"
-        ad_copy = f"✨ Shine with exceptional elegance using {data.product_description}. Order your piece now!"
-    elif "دورة" in desc_lower or "خدمة" in desc_lower or "course" in desc_lower or "service" in desc_lower:
-        platform = "Google Search"
-        ad_copy = f"💡 Develop your skills today with {data.product_description}. Register now for a free consultation."
-    else:
-        platform = "TikTok"
-        ad_copy = f"🔥 Today's Trend: Don't miss out on trying {data.product_description}! Order now."
-
-    new_campaign = CampaignModel(
-        product_description=data.product_description,
-        target_platform=platform,
-        ai_ad_copy=ad_copy,
-        budget=data.budget,
-        ad_status="Active",
-        owner_id=user.id
-    )
-    db.add(new_campaign)
-    db.commit()
-    db.refresh(new_campaign)
-    
-    return {
-        "success": True,
-        "message": "Campaign generated and launched successfully!",
-        "campaign_details": {
-            "id": new_campaign.id,
-            "platform": platform,
-            "generated_copy": ad_copy,
-            "budget": data.budget,
-            "status": new_campaign.ad_status
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Iris AI - منصة الأتمتة الإعلانية الذكية</title>
+    <!-- استدعاء خط عربي أنيق (Cairo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- مكتبة الأيقونات FontAwesome -->
+    <link rel="stylesheetH" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent: #a855f7;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --border: #e2e8f0;
         }
-    }
 
-@app.post("/api/upgrade-subscription")
-def upgrade_subscription(data: PlanUpgrade, db: Session = Depends(get_db)):
-    user = db.query(UserModel).filter(UserModel.email == data.email).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    
-    valid_plans = ["Starter", "Pro", "Enterprise"]
-    if data.plan_name not in valid_plans:
-        raise HTTPException(status_code=400, detail="Invalid plan name")
-        
-    user.selected_plan = data.plan_name
-    user.subscription_status = "Active"
-    db.commit()
-    
-    return {"success": True, "message": f"Subscription upgraded successfully to: {data.plan_name}"}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* الهيدر */
+        header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .auth-btns button {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-login {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--dark);
+            margin-left: 10px;
+        }
+
+        .btn-register {
+            background: var(--primary);
+            border: none;
+            color: white;
+        }
+
+        .btn-register:hover {
+            background: var(--primary-dark);
+        }
+
+        /* الواجهة الرئيسية Hero Section */
+        .hero {
+            padding: 160px 5% 80px 5%;
+            text-align: center;
+            background: radial-gradient(circle at top, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+        }
+
+        /* صندوق الإدخال والتوليد (Smart Onboarding) */
+        .app-container {
+            max-width: 800px;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            margin: 0 auto;
+            border: 1px solid var(--border);
+            text-align: right;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .form-group textarea, .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-group textarea:focus, .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .platforms-select {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .platform-checkbox {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .platform-checkbox.active {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+            color: var(--primary);
+        }
+
+        .btn-launch {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-launch:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* نتائج الحملة (تظهر بعد الضغط) */
+        .result-section {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px dashed var(--border);
+            display: none;
+        }
+
+        .result-section h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        /* مميزات المنصة */
+        .features {
+            padding: 80px 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .feature-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .feature-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* التذييل */
+        footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid var(--border);
+            color: var(--gray);
+            font-size: 0.9rem;
+            background: white;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الهيدر -->
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Black Iris AI
+        </div>
+        <div class="auth-btns">
+            <button class="btn-login">تسجيل الدخول</button>
+            <button class="btn-register">تجربة مجانية 15 يوم</button>
+        </div>
+    </header>
+
+    <!-- الواجهة الرئيسية -->
+    <section class="hero">
+        <h1>أطلق حملاتك الإعلانية بالذكاء الاصطناعي <span>بدون خبرة مسبقة</span></h1>
+        <p>منصة Black Iris AI تدير وتطلق إعلاناتك بذكاء كامل عبر Meta، TikTok، Snapchat و Google بضغطة زر واحدة.</p>
+
+        <!-- لوحة الإدخال والتشغيل -->
+        <div class="app-container">
+            <div class="form-group">
+                <label><i class="fa-solid fa-pen-nib"></i> صف منتجك أو خدمتك في سطرين:</label>
+                <textarea id="productDesc" rows="3" placeholder="مثال: متجر إلكتروني لبيع العطور الفاخرة للرجال، ونريد استهداف محبي الفخامة..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fa-solid fa-bullseye"></i> اختر المنصات المستهدفة:</label>
+                <div class="platforms-select">
+                    <div class="platform-checkbox active" onclick="togglePlatform(this)">Meta (إنستجرام/فيسبوك)</div>
+                    <div class="platform-checkbox active" onclick="togglePlatform(this)">TikTok</div>
+                    <div class="platform-checkbox" onclick="togglePlatform(this)">Snapchat</div>
+                    <div class="platform-checkbox" onclick="togglePlatform(this)">Google Ads</div>
+                </div>
+            </div>
+
+            <button class="btn-launch" onclick="launchCampaign()"><i class="fa-solid fa-rocket"></i> أطلق الحملة الآن</button>
+
+            <!-- صندوق النتائج الوهمي / التجريبي التفاعلي -->
+            <div class="result-section" id="resultSection">
+                <h3><i class="fa-solid fa-circle-check"></i> تم تحليل المنتج وبدء الحملة بنجاح!</h3>
+                <p id="aiOutputText" style="color: var(--dark); font-size: 0.95rem;"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- المميزات -->
+    <section class="features">
+        <div class="feature-card">
+            <i class="fa-solid fa-brain"></i>
+            <h3>توليد إعلانات ذكية</h3>
+            <p>يقوم الذكاء الاصطناعي بصياغة النصوص الإعلانية (Copywriting) الأكثر جذباً لعملائك تلقائياً.</p>
+        </div>
+        <div class="feature-card">
+            <i class="fa-solid fa-chart-line"></i>
+            <h3>التحسين التلقائي للميزانية</h3>
+            <p>يقوم النظام بنقل الميزانية ديناميكياً إلى المنصة التي تحقق أعلى عائد على الإنفاق (ROAS).</p>
+        </div>
+        <div class="feature-card">
+            <i class="fa-solid fa-gauge-high"></i>
+            <h3>لوحة تحكم مبسطة</h3>
+            <p>تابع الوصول، النقرات، والميزانية عبر واجهة بصرية مرنة وسهلة الاستخدام تماماً.</p>
+        </div>
+    </section>
+
+    <!-- التذييل -->
+    <footer>
+        <p>&copy; 2026 Black Iris AI. جميع Rights المحفوظة.</p>
+    </footer>
+
+    <!-- الجافاسكريبت للتفاعل -->
+    <script>
+        function togglePlatform(element) {
+            element.classList.toggle('active');
+        }
+
+        function launchCampaign() {
+            const desc = document.getElementById('productDesc').value;
+            const resultSection = document.getElementById('resultSection');
+            const aiOutputText = document.getElementById('aiOutputText');
+
+            if(!desc.trim()) {
+                alert('الرجاء كتابة وصف المنتج أولاً!');
+                return;
+            }
+
+            // محاكاة استجابة الذكاء الاصطناعي
+            resultSection.style.display = 'block';
+            aiOutputText.innerHTML = `<strong>النص المولد بواسطة AI:</strong> "اكتشف الفخامة المطلقة معنا! عطور مميزة صُممت خصيصاً لتعكس شخصيتك الفريدة." <br><br><strong>حالة الحملة:</strong> تم توزيع الميزانية بكفاءة عالية وبدأت الحملات بالظهور على المنصات المختارة بنجاح.`;
+            
+            resultSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
