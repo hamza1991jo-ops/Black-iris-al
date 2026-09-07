@@ -1,117 +1,198 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Black Iris AI - منصة الأتمتة الإعلانية الذكية</title>
-    <style>
-        body { font-family: Tahoma, sans-serif; background-color: #f4f6f9; text-align: center; padding: 15px; margin: 0; }
-        .container { max-width: 420px; margin: 0 auto; }
-        .card { background: white; padding: 20px; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 15px; text-align: right; }
-        h1 { color: #1a1a1a; font-size: 18px; text-align: center; margin-bottom: 8px; }
-        p { color: #666; font-size: 13px; text-align: center; margin-bottom: 15px; }
-        input[type="email"], input[type="text"], input[type="number"] { width: 100%; padding: 12px; margin: 6px 0 12px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; box-sizing: border-box; }
-        .btn-green { background-color: #28a745; color: white; padding: 12px; border: none; border-radius: 8px; font-size: 15px; width: 100%; cursor: pointer; font-weight: bold; }
-        .btn-blue { background-color: #007bff; color: white; padding: 12px; border: none; border-radius: 8px; font-size: 15px; width: 100%; cursor: pointer; font-weight: bold; }
-        .pricing-box { background: #f8f9fa; padding: 12px; border-radius: 8px; font-size: 13px; color: #333; border: 1px solid #e9ecef; line-height: 1.6; }
-        .result-box { background: #e8f5e9; padding: 14px; border-radius: 8px; margin-top: 12px; font-size: 13px; color: #2e7d32; display: none; border: 1px solid #c8e6c9; line-height: 1.5; }
-        .badge { display: inline-block; background: #e3f2fd; color: #0d47a1; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-bottom: 8px; }
-    </style>
-</head>
-<body>
+from datetime import datetime, timedelta
+from typing import Optional
+from fastapi import FastAPI, HTTPException, Depends
+from pydantic import BaseModel, EmailStr
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, Float, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, Session, relationship
 
-<div class="container">
+# إعداد قاعدة البيانات السحابية/المحلية باستخدام SQLite
+SQLALCHEMY_DATABASE_URL = "sqlite:///./black_iris_ai.db"
+engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
 
-    <!-- 1. قسم الدخول والتسجيل (فترة التجربة 15 يوماً) -->
-    <div class="card">
-        <div style="text-align: center;"><span class="badge">عرض لفترة محدودة</span></div>
-        <h1>ابدأ فترتك التجريبية المجانية</h1>
-        <p>15 يوماً صلاحية كاملة لإدارة وإطلاق الحملات دون دفع مسبق.</p>
-        <label style="font-size: 12px; color: #444;">البريد الإلكتروني:</label>
-        <input type="email5" id="userEmail" placeholder="name@example.com">
-        <button class="btn-green" onclick="registerTrial()">تفعيل التجربة المجانية</button>
-        <p id="regMsg" style="margin-top: 10px; color: #28a745; font-weight: bold; font-size: 13px; text-align: center;"></p>
-    </div>
+# ==================== 1. نماذج قاعدة البيانات (Database Models) ====================
 
-    <!-- 2. قسم الذكاء الاصطناعي والإدخال البسيط (Smart Onboarding) -->
-    <div class="card">
-        <h1>إطلاق الحملة بالذكاء الاصطناعي</h1>
-        <p>أدخل وصف منتجك، وسيتولى الذكاء الاصطناعي صياغة الإعلان واختيار المنصة.</p>
-        
-        <label style="font-size: 12px; color: #444;">ما هو منتجك ووصفه؟</label>
-        <input type="text" id="productDesc" placeholder="مثال: عطور فاخرة في الأردن">
-        
-        <label style="font-size: 12px; color: #444;">الميزانية التقديرية ($):</label>
-        <input type="number" id="adBudget" placeholder="50">
+class UserModel(Base):
+    __tablename__ = "users"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True)
+    signup_date = Column(DateTime, default=datetime.utcnow)
+    subscription_status = Column(String, default="Trial")  # Trial, Active, Expired
+    selected_plan = Column(String, default="Free_15_Days") # Starter, Pro, Enterprise, Free_15_Days
+    
+    campaigns = relationship("CampaignModel", back_populates="owner")
 
-        <button class="btn-blue" onclick="launchCampaign()">توليد الإعلان وأطلق الحملة الآن</button>
-        
-        <!-- صندوق عرض النتيجة الذكية -->
-        <div id="resultBox" class="result-box">
-            <b>🚀 تم إطلاق الحملة بنجاح عبر المنصة!</b><br><br>
-            • <b>المنصة المختارة:</b> <span id="resPlatform"></span><br>
-            • <b>النص التسويقي:</b> <span id="resCopy" style="font-weight: bold; color: #1b5e20;"></span><br>
-            • <b>الميزانية المعتمدة:</b> <span id="resBudget"></span>$
-        </div>
-    </div>
+class CampaignModel(Base):
+    __tablename__ = "campaigns"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    product_description = Column(String)
+    target_platform = Column(String)
+    ai_ad_copy = Column(String)
+    budget = Column(Float)
+    ad_status = Column(String, default="Active") # Active, Paused, Completed
+    owner_id = Column(Integer, ForeignKey("users.id"))
+    
+    owner = relationship("UserModel", back_populates="campaigns")
 
-    <!-- 3. قسم نموذج الاشتراكات والدفع (Pricing Model) -->
-    <div class="card">
-        <h1>الباقات الشهرية بعد التجربة</h1>
-        <div class="pricing-box">
-            • <b>الأساسية (Starter):</b> للحملات المحدودة ومنصة واحدة.<br>
-            • <b>الاحترافية (Pro):</b> حملات غير محدودة وكل المنصات <b>(موصى بها)</b>.<br>
-            • <b>الشركات (Enterprise):</b> للميزات المتقدمة والدعم الشامل.<br>
-            <hr style="border:0; border-top:1px solid #ddd; margin:8px 0;">
-            <span style="font-size: 11px; color: #666;">* مدعوم ببوابات دفع آمنة (Stripe / PayTabs).</span>
-        </div>
-    </div>
+Base.metadata.create_all(bind=engine)
 
-</div>
+# ==================== 2. هياكل المدخلات (Pydantic Schemas) ====================
 
-<script>
-    function registerTrial() {
-        var email = document.getElementById('userEmail').value;
-        if(email.trim() === "" || !email.includes("@")) {
-            alert("الرجاء إدخال بريد إلكتروني صحيح!");
-            return;
-        }
-        document.getElementById('regMsg').innerText = "✅ تم تفعيل حسابك التجريبي (15 يوماً) بنجاح!";
+class UserCreate(BaseModel):
+    email: EmailStr
+
+class CampaignCreate(BaseModel):
+    user_email: EmailStr
+    product_description: str
+    budget: float
+
+class PlanUpgrade(BaseModel):
+    email: EmailStr
+    plan_name: str
+
+# دالة الاتصال بقاعدة البيانات
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+# إعداد تطبيق FastAPI
+app = FastAPI(
+    title="Black Iris AI Backend",
+    description="Backend API for Black Iris AI Autonomous Advertising Platform",
+    version="1.0.0"
+)
+
+# ==================== 3. المسارات البرمجية للمنصة (API Endpoints) ====================
+
+@app.post("/api/register")
+def register_user(user: UserCreate, db: Session = Depends(get_db)):
+    """تسجيل مستخدم جديد ومنحه فترة تجريبية مجانية لمدة 15 يوماً تلقائياً"""
+    db_user = db.query(UserModel).filter(UserModel.email == user.email).first()
+    if db_user:
+        return {"message": "المستخدم مسجل مسبقاً", "status": db_user.subscription_status}
+    
+    new_user = UserModel(
+        email=user.email,
+        signup_date=datetime.utcnow(),
+        subscription_status="Trial",
+        selected_plan="Free_15_Days"
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return {
+        "success": True,
+        "message": "تم التسجيل بنجاح، وممنوح 15 يوماً تجريبية للمنصة",
+        "user_id": new_user.id,
+        "signup_date": new_user.signup_date
     }
 
-    function launchCampaign() {
-        var desc = document.getElementById('productDesc').value;
-        var budget = document.getElementById('adBudget').value;
 
-        if(desc.trim() === "") {
-            alert("الرجاء إدخال وصف المنتج أولاً!");
-            return;
-        }
-        if(budget.trim() === "") {
-            alert("الرجاء تحديد الميزانية!");
-            return;
-        }
-
-        // محاكاة اختيار الذكاء الاصطناعي للمنصة والنص التسويقي بناءً على الوصف
-        var platform = "Instagram & TikTok";
-        var copyText = "اكتشف الجودة والتميز مع '" + desc + "'! اطلب الآن واستفد من العرض الحصري لفترة محدودة.";
-        
-        if(desc.includes("عطور") || desc.includes("مجوهرات")) {
-            platform = "Instagram & Snapchat";
-            copyText = "✨ تألق بإطلالة استثنائية مع " + desc + ". اطلب قطعتك الآن!";
-        } else if(desc.includes("دورة") || desc.includes("خدمة")) {
-            platform = "Google Search";
-            copyText = "💡 طوّر أعمالك ومهاراتك اليوم مع " + desc + ". سجل الآن واحصل على استشارة فورية.";
-        }
-
-        // عرض النتائج في واجهة المستخدم
-        document.getElementById('resPlatform').innerText = platform;
-        document.getElementById('resCopy').innerText = copyText;
-        document.getElementById('resBudget').innerText = budget;
-        
-        document.getElementById('resultBox').style.display = "block";
+@app.get("/api/check-subscription")
+def check_subscription(email: str, db: Session = Depends(get_db)):
+    """التحقق التلقائي من حالة الـ 15 يوماً التجريبية وتحديثها"""
+    user = db.query(UserModel).filter(UserModel.email == email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="المستخدم غير موجود")
+    
+    if user.subscription_status == "Trial":
+        days_passed = (datetime.utcnow() - user.signup_date).days
+        if days_passed > 15:
+            user.subscription_status = "Expired"
+            db.commit()
+            return {
+                "status": "Expired",
+                "message": "انتهت فترة التجربة المجانية (15 يوماً)، يرجى الترقية إلى إحدى الباقات الشهرية."
+            }
+        else:
+            remaining_days = 15 - days_passed
+            return {
+                "status": "Trial",
+                "remaining_days": remaining_days,
+                "message": f"أنت في فترة التجربة المجانية، متبقي {remaining_days} يوم."
+            }
+            
+    return {
+        "status": user.subscription_status,
+        "plan": user.selected_plan,
+        "message": "الحساب نشط."
     }
-</script>
 
-</body>
-</html>
+
+@app.post("/api/generate-and-launch-campaign")
+def generate_and_launch_campaign(data: CampaignCreate, db: Session = Depends(get_db)):
+    """محاكاة عمل الذكاء الاصطناعي وإطلاق الحملة بعد التحقق من اشتراك المستخدم"""
+    user = db.query(UserModel).filter(UserModel.email == data.user_email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="المستخدم غير مسجل")
+    
+    # التحقق من صلاحية التجربة أو الاشتراك
+    if user.subscription_status == "Trial":
+        if (datetime.utcnow() - user.signup_date).days > 15:
+            user.subscription_status = "Expired"
+            db.commit()
+            raise HTTPException(status_code=403, detail="انتهت فترة التجربة المجانية، يرجى ترقية حسابك.")
+    elif user.subscription_status == "Expired":
+        raise HTTPException(status_code=403, detail="اشتراكك منتهي، يرجى الدفع لمتابعة إطلاق الحملات.")
+    
+    # محاكاة تحليل الذكاء الاصطناعي لاختيار المنصة والنص التسويقي
+    desc_lower = data.product_description.lower()
+    if "عطور" in desc_lower or "ملابس" in desc_lower or "مجوهرات" in desc_lower:
+        platform = "Instagram / Snapchat"
+        ad_copy = f"✨ اكتشف الفخامة المطلقة مع عرضنا الحصري لـ {data.product_description}! اطلب الآن."
+    elif "دورة" in desc_lower or "خدمة" in desc_lower:
+        platform = "Google Search"
+        ad_copy = f"💡 طور مهاراتك اليوم مع {data.product_description}. سجل الآن واحصل على استشارة مجانية."
+    else:
+        platform = "TikTok"
+        ad_copy = f"🔥 تريند اليوم: لا تفوت فرصة تجربة {data.product_description}! اضغط الرابط و اطلب فوراً."
+
+    # حفظ الحملة وإطلاقها
+    new_campaign = CampaignModel(
+        product_description=data.product_description,
+        target_platform=platform,
+        ai_ad_copy=ad_copy,
+        budget=data.budget,
+        ad_status="Active",
+        owner_id=user.id
+    )
+    db.add(new_campaign)
+    db.commit()
+    db.refresh(new_campaign)
+    
+    return {
+        "success": True,
+        "message": "تم تحليل المنتج وإطلاق الحملة بنجاح عبر المنصة المختصة!",
+        "campaign_details": {
+            "id": new_campaign.id,
+            "platform": platform,
+            "generated_copy": ad_copy,
+            "budget": data.budget,
+            "status": new_campaign.ad_status
+        }
+    }
+
+
+@app.post("/api/upgrade-subscription")
+def upgrade_subscription(data: PlanUpgrade, db: Session = Depends(get_db)):
+    """ترقية الحساب إلى إحدى الباقات الشهرية (Starter, Pro, Enterprise)"""
+    user = db.query(UserModel).filter(UserModel.email == data.email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="المستخدم غير موجود")
+    
+    valid_plans = ["Starter", "Pro", "Enterprise"]
+    if data.plan_name not in valid_plans:
+        raise HTTPException(status_code=400, detail="اسم الباقة غير صحيح")
+        
+    user.selected_plan = data.plan_name
+    user.subscription_status = "Active"
+    db.commit()
+    
+    return {"success": True, "message": f"تم تفعيل اشتراكك بنجاح في الباقة: {data.plan_name}"}
