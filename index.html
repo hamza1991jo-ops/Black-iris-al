@@ -62,7 +62,7 @@ app = FastAPI(
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = db.query(UserModel).filter(UserModel.email == user.email).first()
     if db_user:
-        return {"message": "المستخدم مسجل مسبقاً", "status": db_user.subscription_status}
+        return {"message": "User already registered", "status": db_user.subscription_status}
     
     new_user = UserModel(
         email=user.email,
@@ -75,7 +75,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     db.refresh(new_user)
     return {
         "success": True,
-        "message": "تم التسجيل بنجاح، وممنوح 15 يوماً تجريبية للمنصة",
+        "message": "Registered successfully with 15 days free trial",
         "user_id": new_user.id,
         "signup_date": new_user.signup_date
     }
@@ -84,7 +84,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
 def check_subscription(email: str, db: Session = Depends(get_db)):
     user = db.query(UserModel).filter(UserModel.email == email).first()
     if not user:
-        raise HTTPException(status_code=404, detail="المستخدم غير موجود")
+        raise HTTPException(status_code=404, detail="User not found")
     
     if user.subscription_status == "Trial":
         days_passed = (datetime.utcnow() - user.signup_date).days
@@ -93,46 +93,46 @@ def check_subscription(email: str, db: Session = Depends(get_db)):
             db.commit()
             return {
                 "status": "Expired",
-                "message": "انتهت فترة التجربة المجانية (15 يوماً)، يرجى الترقية إلى إحدى الباقات الشهرية."
+                "message": "Free trial period has expired, please upgrade your plan."
             }
         else:
             remaining_days = 15 - days_passed
             return {
                 "status": "Trial",
                 "remaining_days": remaining_days,
-                "message": f"أنت في فترة التجربة المجانية، متبقي {remaining_days} يوم."
+                "message": f"You are in free trial, {remaining_days} days remaining."
             }
             
     return {
         "status": user.subscription_status,
         "plan": user.selected_plan,
-        "message": "الحساب نشط."
+        "message": "Account is active."
     }
 
 @app.post("/api/generate-and-launch-campaign")
 def generate_and_launch_campaign(data: CampaignCreate, db: Session = Depends(get_db)):
     user = db.query(UserModel).filter(UserModel.email == data.user_email).first()
     if not user:
-        raise HTTPException(status_code=404, detail="المستخدم غير مسجل")
+        raise HTTPException(status_code=404, detail="User not registered")
     
     if user.subscription_status == "Trial":
         if (datetime.utcnow() - user.signup_date).days > 15:
             user.subscription_status = "Expired"
             db.commit()
-            raise HTTPException(status_code=403, detail="انتهت فترة التجربة المجانية، يرجى ترقية حسابك.")
+            raise HTTPException(status_code=403, detail="Free trial expired, please upgrade.")
     elif user.subscription_status == "Expired":
-        raise HTTPException(status_code=403, detail="اشتراكك منتهي، يرجى الدفع لمتابعة إطلاق الحملات.")
+        raise HTTPException(status_code=403, detail="Subscription expired, please pay to continue.")
     
     desc_lower = data.product_description.lower()
-    if "عطور" in desc_lower or "ملابس" in desc_lower or "مجوهرات" in desc_lower:
+    if "عطور" in desc_lower or "ملابس" in desc_lower or "مجوهرات" in desc_lower or "perfume" in desc_lower or "clothes" in desc_lower:
         platform = "Instagram & Snapchat"
-        ad_copy = f"✨ تألق بإطلالة استثنائية مع {data.product_description}. اطلب قطعتك الآن!"
-    elif "دورة" in desc_lower or "خدمة" in desc_lower:
+        ad_copy = f"✨ Shine with exceptional elegance using {data.product_description}. Order your piece now!"
+    elif "دورة" in desc_lower or "خدمة" in desc_lower or "course" in desc_lower or "service" in desc_lower:
         platform = "Google Search"
-        ad_copy = f"💡 طور مهاراتك اليوم مع {data.product_description}. سجل الآن واحصل على استشارة مجانية."
+        ad_copy = f"💡 Develop your skills today with {data.product_description}. Register now for a free consultation."
     else:
         platform = "TikTok"
-        ad_copy = f"🔥 تريند اليوم: لا تفوت فرصة تجربة {data.product_description}! اطلب الآن."
+        ad_copy = f"🔥 Today's Trend: Don't miss out on trying {data.product_description}! Order now."
 
     new_campaign = CampaignModel(
         product_description=data.product_description,
@@ -148,7 +148,7 @@ def generate_and_launch_campaign(data: CampaignCreate, db: Session = Depends(get
     
     return {
         "success": True,
-        "message": "تم تحليل المنتج وإطلاق الحملة بنجاح عبر المنصة المختصة!",
+        "message": "Campaign generated and launched successfully!",
         "campaign_details": {
             "id": new_campaign.id,
             "platform": platform,
@@ -162,14 +162,14 @@ def generate_and_launch_campaign(data: CampaignCreate, db: Session = Depends(get
 def upgrade_subscription(data: PlanUpgrade, db: Session = Depends(get_db)):
     user = db.query(UserModel).filter(UserModel.email == data.email).first()
     if not user:
-        raise HTTPException(status_code=404, detail="المستخدم غير موجود")
+        raise HTTPException(status_code=404, detail="User not found")
     
     valid_plans = ["Starter", "Pro", "Enterprise"]
     if data.plan_name not in valid_plans:
-        raise HTTPException(status_code=400, detail="اسم الباقة غير صحيح")
+        raise HTTPException(status_code=400, detail="Invalid plan name")
         
     user.selected_plan = data.plan_name
     user.subscription_status = "Active"
     db.commit()
     
-    return {"success": True, "message": f"تم تفعيل اشتراكك بنجاح في الباقة: {data.plan_name}"}
+    return {"success": True, "message": f"Subscription upgraded successfully to: {data.plan_name}"}
