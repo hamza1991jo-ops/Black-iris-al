@@ -6,41 +6,32 @@ from sqlalchemy import create_engine, Column, Integer, String, DateTime, Float, 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session, relationship
 
-# إعداد قاعدة البيانات السحابية/المحلية باستخدام SQLite
 SQLALCHEMY_DATABASE_URL = "sqlite:///./black_iris_ai.db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-# ==================== 1. نماذج قاعدة البيانات (Database Models) ====================
-
 class UserModel(Base):
     __tablename__ = "users"
-    
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True)
     signup_date = Column(DateTime, default=datetime.utcnow)
-    subscription_status = Column(String, default="Trial")  # Trial, Active, Expired
-    selected_plan = Column(String, default="Free_15_Days") # Starter, Pro, Enterprise, Free_15_Days
-    
+    subscription_status = Column(String, default="Trial")
+    selected_plan = Column(String, default="Free_15_Days")
     campaigns = relationship("CampaignModel", back_populates="owner")
 
 class CampaignModel(Base):
     __tablename__ = "campaigns"
-    
     id = Column(Integer, primary_key=True, index=True)
     product_description = Column(String)
     target_platform = Column(String)
     ai_ad_copy = Column(String)
     budget = Column(Float)
-    ad_status = Column(String, default="Active") # Active, Paused, Completed
+    ad_status = Column(String, default="Active")
     owner_id = Column(Integer, ForeignKey("users.id"))
-    
     owner = relationship("UserModel", back_populates="campaigns")
 
 Base.metadata.create_all(bind=engine)
-
-# ==================== 2. هياكل المدخلات (Pydantic Schemas) ====================
 
 class UserCreate(BaseModel):
     email: EmailStr
@@ -54,7 +45,6 @@ class PlanUpgrade(BaseModel):
     email: EmailStr
     plan_name: str
 
-# دالة الاتصال بقاعدة البيانات
 def get_db():
     db = SessionLocal()
     try:
@@ -62,18 +52,14 @@ def get_db():
     finally:
         db.close()
 
-# إعداد تطبيق FastAPI
 app = FastAPI(
     title="Black Iris AI Backend",
     description="Backend API for Black Iris AI Autonomous Advertising Platform",
     version="1.0.0"
 )
 
-# ==================== 3. المسارات البرمجية للمنصة (API Endpoints) ====================
-
 @app.post("/api/register")
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
-    """تسجيل مستخدم جديد ومنحه فترة تجريبية مجانية لمدة 15 يوماً تلقائياً"""
     db_user = db.query(UserModel).filter(UserModel.email == user.email).first()
     if db_user:
         return {"message": "المستخدم مسجل مسبقاً", "status": db_user.subscription_status}
@@ -94,10 +80,8 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
         "signup_date": new_user.signup_date
     }
 
-
 @app.get("/api/check-subscription")
 def check_subscription(email: str, db: Session = Depends(get_db)):
-    """التحقق التلقائي من حالة الـ 15 يوماً التجريبية وتحديثها"""
     user = db.query(UserModel).filter(UserModel.email == email).first()
     if not user:
         raise HTTPException(status_code=404, detail="المستخدم غير موجود")
@@ -125,15 +109,12 @@ def check_subscription(email: str, db: Session = Depends(get_db)):
         "message": "الحساب نشط."
     }
 
-
 @app.post("/api/generate-and-launch-campaign")
 def generate_and_launch_campaign(data: CampaignCreate, db: Session = Depends(get_db)):
-    """محاكاة عمل الذكاء الاصطناعي وإطلاق الحملة بعد التحقق من اشتراك المستخدم"""
     user = db.query(UserModel).filter(UserModel.email == data.user_email).first()
     if not user:
         raise HTTPException(status_code=404, detail="المستخدم غير مسجل")
     
-    # التحقق من صلاحية التجربة أو الاشتراك
     if user.subscription_status == "Trial":
         if (datetime.utcnow() - user.signup_date).days > 15:
             user.subscription_status = "Expired"
@@ -142,7 +123,6 @@ def generate_and_launch_campaign(data: CampaignCreate, db: Session = Depends(get
     elif user.subscription_status == "Expired":
         raise HTTPException(status_code=403, detail="اشتراكك منتهي، يرجى الدفع لمتابعة إطلاق الحملات.")
     
-    # تحليل الذكاء الاصطناعي لاختيار المنصة والنص التسويقي بشكل مرتب ومنسق
     desc_lower = data.product_description.lower()
     if "عطور" in desc_lower or "ملابس" in desc_lower or "مجوهرات" in desc_lower:
         platform = "Instagram & Snapchat"
@@ -154,7 +134,6 @@ def generate_and_launch_campaign(data: CampaignCreate, db: Session = Depends(get
         platform = "TikTok"
         ad_copy = f"🔥 تريند اليوم: لا تفوت فرصة تجربة {data.product_description}! اطلب الآن."
 
-    # حفظ الحملة وإطلاقها
     new_campaign = CampaignModel(
         product_description=data.product_description,
         target_platform=platform,
@@ -179,10 +158,8 @@ def generate_and_launch_campaign(data: CampaignCreate, db: Session = Depends(get
         }
     }
 
-
 @app.post("/api/upgrade-subscription")
 def upgrade_subscription(data: PlanUpgrade, db: Session = Depends(get_db)):
-    """ترقية الحساب إلى إحدى الباقات الشهرية (Starter, Pro, Enterprise)"""
     user = db.query(UserModel).filter(UserModel.email == data.email).first()
     if not user:
         raise HTTPException(status_code=404, detail="المستخدم غير موجود")
